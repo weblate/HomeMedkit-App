@@ -7,7 +7,7 @@ import zxingcpp.BarcodeReader
 class CodeAnalyzer(private val onResult: (String) -> Unit) : ImageAnalysis.Analyzer {
     private val reader = BarcodeReader().apply {
         options.formats = setOf(BarcodeReader.Format.DATA_MATRIX, BarcodeReader.Format.EAN_13)
-        options.textMode = BarcodeReader.TextMode.ESCAPED
+        options.textMode = BarcodeReader.TextMode.PLAIN
 
         options.tryInvert = true
         options.tryHarder = true

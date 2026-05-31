@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "ru.application.homemedkit"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "ru.application.homemedkit"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 71
-        versionName = "1.9.6"
+        targetSdk = 37
+        versionCode = 72
+        versionName = "1.9.7"
     }
 
     dependenciesInfo {

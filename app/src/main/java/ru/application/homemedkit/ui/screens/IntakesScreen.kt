@@ -73,6 +73,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastForEachIndexed
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -488,11 +489,14 @@ private fun DialogAddTaken(
                     )
                     ExposedDropdownMenu(
                         expanded = expanded,
+                        shape = MenuDefaults.standaloneGroupShape,
+                        containerColor = MenuDefaults.groupStandardContainerColor,
                         onDismissRequest = { expanded = false }
                     ) {
-                        medicines.fastForEach { item ->
+                        medicines.fastForEachIndexed { index, item ->
                             DropdownMenuItem(
-                                shape = MenuDefaults.shape,
+                                shapes = MenuDefaults.itemShape(index, medicines.size),
+                                selected = item == newTaken.medicine,
                                 onClick = {
                                     onEvent(NewTakenEvent.PickMedicine(item))
                                     expanded = false

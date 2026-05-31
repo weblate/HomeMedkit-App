@@ -2,6 +2,7 @@
 
 package ru.application.homemedkit.ui.theme
 
+import android.graphics.Color
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -129,26 +130,23 @@ fun AppTheme(content: @Composable () -> Unit) {
     )
 
     DisposableEffect(darkTheme, darkState) {
-        activity.enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.auto(
-                lightScrim = android.graphics.Color.TRANSPARENT,
-                darkScrim = android.graphics.Color.TRANSPARENT,
-                detectDarkMode = { darkTheme }
-            ),
-            navigationBarStyle = SystemBarStyle.auto(
-                lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF),
-                darkScrim = if (darkState == Theme.DARK_AMOLED) {
-                    android.graphics.Color.TRANSPARENT
-                } else {
-                    android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
-                },
-                detectDarkMode = { darkTheme }
-            )
-        )
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            activity.window.isNavigationBarContrastEnforced = false
+        val scrim = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (darkTheme) {
+                if (darkState == Theme.DARK_AMOLED) Color.TRANSPARENT
+                else Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+            } else {
+                Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+            }
+        } else {
+            Color.TRANSPARENT
         }
+
+        activity.enableEdgeToEdge(
+            statusBarStyle = if (darkTheme) SystemBarStyle.dark(Color.TRANSPARENT)
+            else SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = if (darkTheme) SystemBarStyle.dark(scrim)
+            else SystemBarStyle.light(scrim, scrim)
+        )
 
         onDispose { }
     }

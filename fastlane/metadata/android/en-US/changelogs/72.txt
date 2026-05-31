@@ -1,0 +1,3 @@
+— When adding a new intake, the expired medicines are no longer displayed in the list. In addition, the selected medicine is now highlighted in this list.
+— Fixed an error that caused the labeling of new drugs to not be read.
+— Fixed the date format in the scheduled dialog.

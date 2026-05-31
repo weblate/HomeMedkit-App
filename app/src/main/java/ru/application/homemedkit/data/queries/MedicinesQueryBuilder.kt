@@ -47,5 +47,5 @@ object MedicinesQueryBuilder {
         return SimpleSQLiteQuery(basicQuery.toString(), args.toTypedArray())
     }
 
-    val selectAll = selectBy(BLANK, Sorting.IN_NAME, false, emptySet())
+    val selectNotEmpty = selectBy(BLANK, Sorting.IN_NAME, true, emptySet())
 }

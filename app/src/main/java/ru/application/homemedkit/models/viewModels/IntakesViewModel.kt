@@ -57,7 +57,7 @@ class IntakesViewModel : BaseViewModel<IntakesState, IntakesEvent>() {
     val takenManager by lazy(::TakenManager)
     val newTakenManager by lazy(::NewTakenManager)
 
-    val medicines = medicineDAO.getFlow(MedicinesQueryBuilder.selectAll)
+    val medicines = medicineDAO.getFlow(MedicinesQueryBuilder.selectNotEmpty)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     val intakes = state.flatMapLatest { query ->

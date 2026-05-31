@@ -32,7 +32,7 @@ object Formatter {
         get() = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     val FORMAT_DD_MM: DateTimeFormatter
-        get() = DateTimeFormatter.ofPattern("dd MMMM")
+        get() = DateTimeFormatter.ofPattern("d MMMM")
 
     val FORMAT_H_MM: DateTimeFormatter
         get() = DateTimeFormatter.ofPattern("H:mm")
