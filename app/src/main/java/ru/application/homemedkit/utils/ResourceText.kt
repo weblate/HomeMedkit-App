@@ -34,49 +34,67 @@ sealed interface ResourceText {
         is StaticString -> value
 
         is MultiString -> buildString {
-            value.forEachIndexed { index, text ->
+            value.forEach { text ->
                 append(text.asString())
-                if (index < value.lastIndex) append(" ")
             }
         }
 
-        is StringResource -> {
-            if (args.isEmpty()) {
-                stringResource(resourceId)
-            } else {
-                val mappedArgs = args.map { arg ->
-                    if (arg is ResourceText) arg.asString() else arg
+        is StringResource -> if (args.isEmpty()) stringResource(resourceId)
+        else {
+            val argsArray = Array(args.size) { index ->
+                when (val arg = args[index]) {
+                    is ResourceText -> arg.asString()
+                    else -> arg
                 }
-
-                stringResource(resourceId, *mappedArgs.toTypedArray())
             }
+
+            stringResource(resourceId, *argsArray)
         }
 
-        is PluralStringResource -> pluralStringResource(resourceId, count, *args)
+        is PluralStringResource -> if (args.isEmpty()) pluralStringResource(resourceId, count)
+        else {
+            val argsArray = Array(args.size) { index ->
+                when (val arg = args[index]) {
+                    is ResourceText -> arg.asString()
+                    else -> arg
+                }
+            }
+
+            pluralStringResource(resourceId, count, *argsArray)
+        }
     }
 
     fun asString(context: Context): String = when (this) {
         is StaticString -> value
 
         is MultiString -> buildString {
-            value.forEachIndexed { index, text ->
+            value.forEach { text ->
                 append(text.asString(context))
-                if (index < value.lastIndex) append(" ")
             }
         }
 
-        is StringResource -> {
-            if (args.isEmpty()) {
-                context.getString(resourceId)
-            } else {
-                val mappedArgs = args.map { arg ->
-                    if (arg is ResourceText) arg.asString(context) else arg
+        is StringResource -> if (args.isEmpty()) context.getString(resourceId)
+        else {
+            val argsArray = Array(args.size) { index ->
+                when (val arg = args[index]) {
+                    is ResourceText -> arg.asString(context)
+                    else -> arg
                 }
-
-                context.getString(resourceId, *mappedArgs.toTypedArray())
             }
+
+            context.getString(resourceId, *argsArray)
         }
 
-        is PluralStringResource -> context.resources.getQuantityString(resourceId, count, *args)
+        is PluralStringResource -> if (args.isEmpty()) context.resources.getQuantityString(resourceId, count)
+        else {
+            val argsArray = Array(args.size) { index ->
+                when (val arg = args[index]) {
+                    is ResourceText -> arg.asString(context)
+                    else -> arg
+                }
+            }
+
+            context.resources.getQuantityString(resourceId, count, *argsArray)
+        }
     }
 }

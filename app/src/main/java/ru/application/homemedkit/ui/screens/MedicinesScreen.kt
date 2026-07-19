@@ -125,7 +125,7 @@ fun MedicinesScreen(model: MedicinesViewModel = viewModel(), onNavigate: (Screen
             IconButton(model::showSorting) { VectorIcon(R.drawable.vector_sort) }
             DropdownMenuPopup(state.showSorting, model::showSorting) {
                 DropdownMenuGroup(MenuDefaults.groupShape(0, 2)) {
-                    MenuDefaults.Label {
+                    MenuDefaults.DropdownMenuGroupLabel {
                         Text(
                             text = stringResource(R.string.preference_sorting_type),
                             style = MaterialTheme.typography.labelMedium
@@ -147,7 +147,7 @@ fun MedicinesScreen(model: MedicinesViewModel = viewModel(), onNavigate: (Screen
                 Spacer(Modifier.height(MenuDefaults.GroupSpacing))
 
                 DropdownMenuGroup(MenuDefaults.groupShape(1, 2)) {
-                    MenuDefaults.Label {
+                    MenuDefaults.DropdownMenuGroupLabel {
                         Text(
                             text = stringResource(R.string.text_list_view),
                             style = MaterialTheme.typography.labelMedium

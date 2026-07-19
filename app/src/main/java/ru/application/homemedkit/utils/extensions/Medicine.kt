@@ -9,8 +9,6 @@ import ru.application.homemedkit.data.model.MedicineMain
 import ru.application.homemedkit.models.states.MedicineState
 import ru.application.homemedkit.models.states.TechnicalState
 import ru.application.homemedkit.network.models.MainModel
-import ru.application.homemedkit.network.models.bio.BioData
-import ru.application.homemedkit.network.models.medicine.DrugsData
 import ru.application.homemedkit.utils.Formatter
 import ru.application.homemedkit.utils.ResourceText
 import ru.application.homemedkit.utils.enums.DrugType
@@ -61,6 +59,7 @@ fun MedicineMain.toMedicineList(currentMillis: Long) = MedicineList(
     prodAmountDoseType = ResourceText.MultiString(
         value = listOf(
             ResourceText.StaticString(Formatter.decimalFormat(prodAmount)),
+            ResourceText.StaticString(" "),
             ResourceText.StringResource(doseType.title)
         )
     ),
@@ -91,38 +90,35 @@ fun MedicineState.toMedicine() = Medicine(
     verified = technical.verified
 )
 
-fun MainModel.asMedicine() = drugsData?.toMedicine() ?: bioData?.toMedicine() ?: toMedicine()
+fun MainModel.asMedicine(): Medicine {
+    val form = pharmacyInfo?.form ?: attributes["Форма выпуска"].orEmpty()
+    val dose = pharmacyInfo?.dosage ?: attributes["Объём / Масса единицы потребления"].orEmpty()
+    val quantity = pharmacyInfo?.quantity ?: attributes["Количество единиц потребления"]
 
-private fun DrugsData.toMedicine() = Medicine(
-    productName = prodDescLabel,
-    expDate = expireDate,
-    prodFormNormName = foiv.prodFormNormName,
-    prodDNormName = foiv.prodDNormName.orEmpty(),
-    doseType = DrugType.getDoseType(foiv.prodFormNormName),
-    phKinetics = vidalData?.phKinetics.orEmpty().asHtml(),
-    scanned = true,
-    verified = true,
-    prodAmount = foiv.prodPack1Size?.let { it.toDouble() * (foiv.prodPack12?.toDoubleOrNull() ?: 1.0) } ?: 0.0
-)
+    val parsedAmount = quantity
+        ?.substringBefore(' ')
+        ?.toDoubleOrNull()
+        ?: -1.0
 
-private fun BioData.toMedicine() = Medicine(
-    productName = productName,
-    expDate = expireDate ?: 0L,
-    prodDNormName = productProperty?.unitVolumeWeight.orEmpty(),
-    prodAmount = productProperty?.quantityInPack ?: 0.0,
-    phKinetics = productProperty?.applicationArea.orEmpty().asHtml(),
-    recommendations = productProperty?.recommendForUse.orEmpty().asHtml(),
-    storageConditions = productProperty?.storageConditions.orEmpty().asHtml(),
-    structure = productProperty?.structure.orEmpty().asHtml(),
-    prodFormNormName = productProperty?.releaseForm.orEmpty().substringBefore(" ").uppercase(),
-    doseType = DrugType.getDoseType(productProperty?.releaseForm.orEmpty()),
-    scanned = true,
-    verified = true
-)
+    val phKinetics = attributes["Показания к применению"]
+        ?: attributes["Область применения"].orEmpty()
 
-private fun MainModel.toMedicine() = Medicine(
-    productName = productName,
-    prodAmount = 0.0,
-    scanned = true,
-    verified = true
-)
+    return Medicine(
+        productName = productName.orEmpty(),
+        expDate = expireDate ?: -1L,
+        prodFormNormName = form.substringBefore(" ").uppercase(),
+        prodDNormName = dose,
+        doseType = DrugType.getDoseType(form),
+        phKinetics = phKinetics.asHtml(),
+        prodAmount = parsedAmount,
+
+        // БАДы
+        recommendations = attributes["Рекомендации по употреблению"].orEmpty().asHtml(),
+        storageConditions = attributes["Условия хранения"].orEmpty().asHtml(),
+        structure = attributes["Состав"].orEmpty().asHtml(),
+
+        // Статус
+        verified = true,
+        scanned = true
+    )
+}

@@ -1,19 +1,19 @@
 [versions]
 camera2 = "1.6.1"
-coil = "3.4.0"
-compose-bom = "2026.05.01"
-compose-lifecycle = "2.10.0"
+coil = "3.5.0"
+compose-bom = "2026.06.01"
+compose-lifecycle = "2.11.0"
 google-ksp = "2.3.9"
-gradle = "9.2.1"
-kotlin = "2.3.21"
+gradle = "9.3.0"
+kotlin = "2.4.10"
 kotlinx-serialization-json = "1.11.0"
-ktor = "3.5.0"
+ktor = "3.5.1"
 material-preferences = "2.2.0"
-material3 = "1.5.0-alpha20"
-navigation3 = "1.1.2"
+material3 = "1.5.0-alpha24"
+navigation3 = "1.1.4"
 room = "2.8.4"
 work-manager = "2.11.2"
-zxing-android = "3.0.2"
+zxing-android = "3.1.0"
 
 [libraries]
 androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera2" }

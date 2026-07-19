@@ -18,13 +18,17 @@ import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.request
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsChannel
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Url
+import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.http.parameters
 import io.ktor.serialization.JsonConvertException
@@ -43,6 +47,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import ru.application.homemedkit.models.events.Response
 import ru.application.homemedkit.network.auth.PKCEUtils
 import ru.application.homemedkit.network.auth.yandex
@@ -56,10 +62,14 @@ import ru.application.homemedkit.utils.CLIENT_ID_YANDEX
 import ru.application.homemedkit.utils.CLIENT_SECRET_YANDEX
 import ru.application.homemedkit.utils.TOKEN_URL_YANDEX
 import ru.application.homemedkit.utils.di.Preferences
+import ru.application.homemedkit.utils.shiftCipher
 import java.io.File
 import kotlin.io.encoding.Base64
+import kotlin.time.Duration.Companion.milliseconds
 
 object Network {
+    private const val OBFUSCATED_URL = "^jjfi0%%ceX_b[\$Wf_\$Yhfj\$hk%"
+
     private val defaultClient = HttpClient(Android) {
         engine {
             dispatcher = Dispatchers.IO
@@ -76,7 +86,7 @@ object Network {
     }
 
     private val medicineClient = defaultClient.config {
-        defaultRequest { url("https://mobile.api.crpt.ru/") }
+        defaultRequest { url(shiftCipher(OBFUSCATED_URL)) }
     }
 
     private val yandexClient = defaultClient.config {
@@ -112,10 +122,20 @@ object Network {
     }
 
     suspend fun getMedicine(code: String) = try {
-        val codeType = if (code.length == 13) "ean13" else "datamatrix"
-        val response = medicineClient.get("mobile/check") {
-            parameter("code", code)
-            parameter("codeType", codeType)
+        val isEan13 = code.length == 13
+
+        val codeType = if (isEan13) "ean13" else "datamatrix"
+        val url = shiftCipher(if (isEan13) "ceX_b[%Y^[Ya" else "l(%ceX_b[%Y^[Ya")
+        val finalCode = if (isEan13) code else "{FNC1}$code"
+
+        val response = medicineClient.post(url) {
+            contentType(ContentType.Application.Json)
+            setBody(
+                body = buildJsonObject {
+                    put("code", finalCode)
+                    put("codeType", codeType)
+                }
+            )
         }
 
         when (response.status) {
@@ -241,7 +261,7 @@ object Network {
                         return@withLock null
                     }
 
-                    delay(1000L * (attempt + 1))
+                    delay((1000L * (attempt + 1)).milliseconds)
                 }
             }
 

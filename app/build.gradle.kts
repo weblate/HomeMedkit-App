@@ -14,8 +14,13 @@ android {
         applicationId = "ru.application.homemedkit"
         minSdk = 26
         targetSdk = 37
-        versionCode = 72
-        versionName = "1.9.7"
+        versionCode = 73
+        versionName = "1.9.8"
+
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
     }
 
     dependenciesInfo {

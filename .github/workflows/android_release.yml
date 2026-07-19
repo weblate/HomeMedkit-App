@@ -128,3 +128,49 @@ jobs:
           tag_name: ${{ needs.get-version.outputs.version_name }}
           body: ${{ needs.prepare-changelog.outputs.release_body }}
           files: HomeMedkit.apk
+
+  deploy-rustore:
+    runs-on: ubuntu-latest
+    needs: [ get-version, build ]
+
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v6
+
+      - name: 'Download HomeMedkit.apk'
+        uses: actions/download-artifact@v8
+        with:
+          name: release-apk
+
+      - name: 'Read changelog'
+        id: read_changelog
+        run: |
+          VERSION_CODE=${{ needs.get-version.outputs.version_code }}
+          CHANGELOG_PATH="fastlane/metadata/android/ru/changelogs/${VERSION_CODE}.txt"
+          
+          EOF=$(openssl rand -hex 8)
+          
+          echo "WHATS_NEW<<$EOF" >> $GITHUB_ENV
+          if [ -f "$CHANGELOG_PATH" ]; then
+            cat "$CHANGELOG_PATH" >> $GITHUB_ENV
+            echo "" >> $GITHUB_ENV
+          else
+            echo "— Это техническое обновление без изменений в интерфейсе." >> $GITHUB_ENV
+          fi
+          echo "$EOF" >> $GITHUB_ENV
+
+      - name: 'RuStore Publish'
+        id: rustore_publish
+        uses: Suro4ek/rustore-action@v0.0.1
+        with:
+          key_id: ${{ secrets.RUSTORE_KEY_ID }}
+          private_key: ${{ secrets.RUSTORE_PRIVATE_KEY }}
+          publish_type: 'INSTANTLY'
+          application_id: 'ru.application.homemedkit'
+          file: 'HomeMedkit.apk'
+          whats_new: ${{ env.WHATS_NEW }}
+
+      - name: 'Print RuStore Result'
+        run: |
+          echo "RuStore version ID: ${{ steps.rustore_publish.outputs.version_id }}"
+          echo "RuStore статус: ${{ steps.rustore_publish.outputs.status }}"

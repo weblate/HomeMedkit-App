@@ -28,6 +28,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import ru.application.homemedkit.R
 import ru.application.homemedkit.utils.BLANK
 import ru.application.homemedkit.utils.extensions.collectLatestChanged
@@ -163,8 +165,10 @@ private fun InteractiveSearchBar(
     tonalElevation: Dp = SearchBarDefaults.TonalElevation,
     shadowElevation: Dp = SearchBarDefaults.ShadowElevation,
 ) {
+    val scope = rememberCoroutineScope()
+
     Surface(
-        modifier = modifier.onGloballyPositioned { state.collapsedCoords = it },
+        modifier = modifier.onGloballyPositioned { scope.launch { state.animateToCollapsed() } },
         shape = shape,
         color = colors.containerColor,
         contentColor = contentColorFor(colors.containerColor),

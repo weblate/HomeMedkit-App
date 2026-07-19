@@ -37,6 +37,9 @@ suspend fun getMedicineImages(
     }
 }
 
+fun shiftCipher(input: String, shift: Int = 10) = input.map { (it.code + shift).toChar() }
+    .joinToString(BLANK)
+
 object DecimalAmountInputTransformation : InputTransformation {
     override fun TextFieldBuffer.transformInput() {
         if (asCharSequence().isNotEmpty()) {
