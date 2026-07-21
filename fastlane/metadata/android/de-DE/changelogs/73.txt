@@ -1,0 +1,1 @@
+Die Vorgehensweise zum Abrufen von Informationen zur Arzneimittelkennzeichnung wurde geändert, da die bisherige Methode nicht mehr verfügbar ist.
