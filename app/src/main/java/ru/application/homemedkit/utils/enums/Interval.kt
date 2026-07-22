@@ -9,6 +9,6 @@ enum class Interval(val days: Int, @StringRes val title: Int) {
     CUSTOM(10, R.string.intake_interval_other);
 
     companion object {
-        fun getValue(days: Int) = entries.find { it.days == days } ?: CUSTOM
+        fun getValue(days: Int) = entries.firstOrNull { it.days == days } ?: CUSTOM
     }
 }

@@ -1,9 +1,13 @@
+@file:OptIn(ExperimentalFoundationStyleApi::class)
+
 package ru.application.homemedkit.ui.elements
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
+import androidx.compose.foundation.style.fillSize
+import androidx.compose.foundation.style.styleable
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +30,8 @@ fun BoxWithEmptyListText(@StringRes text: Int, modifier: Modifier = Modifier) =
 fun BoxLoading(modifier: Modifier = Modifier) = Box(
     content = { CircularProgressIndicator() },
     contentAlignment = Alignment.Center,
-    modifier = modifier
-        .fillMaxSize()
-        .background(Color.Black.copy(alpha = 0.45f))
+    modifier = modifier.styleable {
+        fillSize()
+        background(Color.Black.copy(alpha = 0.45f))
+    }
 )

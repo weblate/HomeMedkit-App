@@ -79,10 +79,17 @@ fun IntakeFullScreen(medicineId: Long, takenId: Long, amount: Double, onBack: ((
     val intake = runBlocking { database.takenDAO().getById(takenId) } ?: return
     val image = runBlocking { database.medicineDAO().getMedicineImage(medicineId) }
 
-    val flag = manager.activeNotifications.size > 1 && manager.activeNotifications
-        .filter { it.packageName == context.packageName }
-        .filter { it.notification.extras.containsKey(IS_ENOUGH_IN_STOCK) }
-        .all { it.notification.extras.getBoolean(IS_ENOUGH_IN_STOCK) }
+    val activeNotifications = manager.activeNotifications
+    var flag = activeNotifications.size > 1
+
+    if (flag) {
+        for (item in activeNotifications) {
+            if (item.packageName == context.packageName && !item.notification.extras.getBoolean(IS_ENOUGH_IN_STOCK, true)) {
+                flag = false
+                break
+            }
+        }
+    }
 
     fun onDismiss() {
         scope.launch {
@@ -109,19 +116,20 @@ fun IntakeFullScreen(medicineId: Long, takenId: Long, amount: Double, onBack: ((
     fun onConfirmAll() {
         scope.launch {
             manager.cancel(Int.MAX_VALUE)
-            manager.activeNotifications
-                .filter { it.packageName == context.packageName }
-                .filter { it.notification.extras.containsKey(IS_ENOUGH_IN_STOCK) }
-                .forEach { item ->
-                    val medicineId = item.notification.extras.getLong(ID)
-                    val takenId = item.notification.extras.getLong(TAKEN_ID)
-                    val amount = item.notification.extras.getDouble(BLANK)
+            for (item in manager.activeNotifications) {
+                if (item.packageName == context.packageName && item.notification.extras.containsKey(IS_ENOUGH_IN_STOCK)) {
+                    val extras = item.notification.extras
+
+                    val medicineId = extras.getLong(ID)
+                    val takenId = extras.getLong(TAKEN_ID)
+                    val amount = extras.getDouble(BLANK)
 
                     manager.cancel(takenId.toInt())
                     database.takenDAO().setNotified(takenId)
                     database.takenDAO().setTaken(takenId, true, System.currentTimeMillis())
                     database.medicineDAO().intakeMedicine(medicineId, amount)
                 }
+            }
 
             if (onBack != null) {
                 onBack()

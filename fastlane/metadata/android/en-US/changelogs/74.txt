@@ -1,0 +1,2 @@
+— Fixed a bug that caused the string to be completely cleared when deleting the digit of fractional numbers.
+— Fixed a bug that caused the camera's double zoom to not work when double tap on screen.

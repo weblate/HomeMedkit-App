@@ -132,7 +132,7 @@ fun AuthScreen(model: AuthViewModel, onBack: () -> Unit) {
     val snackbarState = remember(::SnackbarHostState)
 
     LaunchedEffect(model.snackbarEvent) {
-        model.snackbarEvent.collectLatest { message->
+        model.snackbarEvent.collectLatest { message ->
             snackbarState.showSnackbar(message.asString(context))
         }
     }

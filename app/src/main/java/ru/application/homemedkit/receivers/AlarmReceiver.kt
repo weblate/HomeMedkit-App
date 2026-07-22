@@ -110,10 +110,14 @@ class AlarmReceiver : BroadcastReceiver() {
                 )
 
                 if (activeNotifications.size > 1) {
-                    val flag = activeNotifications
-                        .filter { it.packageName == context.packageName }
-                        .filter { it.notification.extras.containsKey(IS_ENOUGH_IN_STOCK) }
-                        .all { it.notification.extras.getBoolean(IS_ENOUGH_IN_STOCK) }
+                    var flag = true
+
+                    for (item in activeNotifications) {
+                        if (item.packageName == context.packageName && !item.notification.extras.getBoolean(IS_ENOUGH_IN_STOCK, true)) {
+                            flag = false
+                            break
+                        }
+                    }
 
                     if (flag) {
                         val action = Intent(context, ActionGroupReceiver::class.java)

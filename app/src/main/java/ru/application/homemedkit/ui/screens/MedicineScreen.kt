@@ -1,5 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class,
-    ExperimentalUuidApi::class
+    ExperimentalUuidApi::class, ExperimentalFoundationStyleApi::class
 )
 
 package ru.application.homemedkit.ui.screens
@@ -18,8 +18,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -51,6 +49,14 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
+import androidx.compose.foundation.style.Style
+import androidx.compose.foundation.style.contentPadding
+import androidx.compose.foundation.style.externalPadding
+import androidx.compose.foundation.style.fillHeight
+import androidx.compose.foundation.style.fillSize
+import androidx.compose.foundation.style.size
+import androidx.compose.foundation.style.styleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
@@ -70,6 +76,7 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.LocalMaterialTheme
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -92,7 +99,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -655,31 +661,38 @@ private fun ProductImage(images: List<String>, isDefault: Boolean, onShow: (Int)
 
     Box(
         modifier = Modifier
-            .width(128.dp)
-            .fillMaxHeight()
-            .border(1.dp, MaterialTheme.colorScheme.onSurface, MaterialTheme.shapes.medium)
+            .styleable {
+                fillHeight()
+                width(128.dp)
+
+                borderWidth(1.dp)
+                borderColor(LocalMaterialTheme.currentValue.colorScheme.onSurface)
+
+                shape(LocalMaterialTheme.currentValue.shapes.medium)
+            }
             .clickable {
                 if (isDefault) onShow(pagerState.currentPage)
                 else onDismiss()
             }
     ) {
+        val imageStyle = Style {
+            fillHeight()
+            contentPadding(8.dp)
+        }
+
         if (images.isNotEmpty()) {
             HorizontalPager(pagerState) {
                 MedicineImage(
                     image = images[it],
                     editable = !isDefault,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(8.dp)
+                    modifier = Modifier.styleable(null, imageStyle)
                 )
             }
         } else {
             MedicineImage(
                 image = null,
                 editable = !isDefault,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(8.dp)
+                modifier = Modifier.styleable(null, imageStyle)
             )
         }
 
@@ -748,19 +761,30 @@ private fun DialogFullImage(images: List<String>, initialPage: Int, onDismiss: (
     Dialog(onDismiss) {
         Surface(
             shape = MaterialTheme.shapes.medium,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 120.dp)
+            modifier = Modifier.styleable {
+                fillSize()
+                contentPadding(0.dp, 120.dp)
+            }
         ) {
             Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
                 if (images.isNotEmpty()) {
                     HorizontalPager(pagerState) { page ->
                         Box(Modifier.fillMaxWidth(), Alignment.Center) {
-                            MedicineImage(images[page], Modifier.size(240.dp, 340.dp))
+                            MedicineImage(
+                                image = images[page],
+                                modifier = Modifier.styleable {
+                                    size(240.dp, 340.dp)
+                                }
+                            )
                         }
                     }
                 } else {
-                    MedicineImage(null, Modifier.size(240.dp, 340.dp))
+                    MedicineImage(
+                        image = null,
+                        modifier = Modifier.styleable {
+                            size(240.dp, 340.dp)
+                        }
+                    )
                 }
 
                 Spacer(Modifier.height(16.dp))
@@ -810,10 +834,15 @@ private fun DialogPictureGrid(images: List<String>, imageEditing: ImageEditing, 
                         MedicineImage(
                             image = image,
                             editable = false,
-                            modifier = Modifier
-                                .size(80.dp, 120.dp)
-                                .border(1.dp, borderColor, MaterialTheme.shapes.medium)
-                                .padding(4.dp)
+                            modifier = Modifier.styleable {
+                                size(80.dp, 120.dp)
+                                contentPadding(4.dp)
+
+                                borderWidth(1.dp)
+                                borderColor(borderColor)
+
+                                shape(LocalMaterialTheme.currentValue.shapes.medium)
+                            }
                         )
                     }
 
@@ -823,7 +852,9 @@ private fun DialogPictureGrid(images: List<String>, imageEditing: ImageEditing, 
                                 content = { VectorIcon(R.drawable.vector_add) },
                                 contentAlignment = Alignment.Center,
                                 modifier = Modifier
-                                    .size(80.dp, 120.dp)
+                                    .styleable {
+                                        size(80.dp, 120.dp)
+                                    }
                                     .drawBehind {
                                         drawRoundRect(
                                             color = borderColor,
@@ -1002,8 +1033,10 @@ private fun IconPicker(isEnabled: (DrugType) -> Boolean, onDismiss: () -> Unit, 
                     MedicineImage(
                         image = type.icon,
                         modifier = Modifier
-                            .size(128.dp)
-                            .padding(16.dp)
+                            .styleable {
+                                size(128.dp)
+                                contentPadding(16.dp)
+                            }
                             .align(Alignment.CenterHorizontally)
                     )
                     Text(
@@ -1039,12 +1072,19 @@ private fun CameraPhotoPreview(scope: CoroutineScope, event: (MedicineEvent) -> 
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(bottom = 24.dp)
                 .align(Alignment.BottomCenter)
-                .size(80.dp)
-                .clip(CircleShape)
-                .background(Color.White, CircleShape)
-                .border(4.dp, Color.LightGray, CircleShape)
+                .styleable {
+                    size(80.dp)
+                    externalPaddingBottom(24.dp)
+
+                    shape(CircleShape)
+                    background(Color.White)
+
+                    borderWidth(4.dp)
+                    borderColor(Color.LightGray)
+
+                    shape(CircleShape)
+                }
                 .clickable {
                     scope.launch {
                         val image = controller.takePicture {
@@ -1114,16 +1154,18 @@ private fun PageIndicator(pageCount: Int, currentPage: Int, modifier: Modifier =
         Row(modifier.fillMaxWidth(), Arrangement.Center) {
             repeat(pageCount) { index ->
                 Box(
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .clip(CircleShape)
-                        .size(12.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.onSurface.copy(
+                    modifier = Modifier.styleable {
+                        size(12.dp)
+                        externalPadding(2.dp)
+
+                        shape(CircleShape)
+                        background(
+                            color = LocalMaterialTheme.currentValue.colorScheme.onSurface.copy(
                                 alpha = if (currentPage == index) 0.3f
                                 else 0.7f
                             )
                         )
+                    }
                 )
             }
         }

@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalFoundationStyleApi::class
+)
 
 package ru.application.homemedkit.ui.screens
 
@@ -8,7 +10,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
+import androidx.compose.foundation.style.contentPadding
+import androidx.compose.foundation.style.fillHeight
+import androidx.compose.foundation.style.fillWidth
+import androidx.compose.foundation.style.styleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.text.input.InputTransformation
@@ -50,6 +56,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.LocalMaterialTheme
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
@@ -231,17 +238,23 @@ private fun MedicineInfo(medicine: MedicineIntake, image: String) {
 
     Row(
         horizontalArrangement = spacedBy(12.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(156.dp)
+        modifier = Modifier.styleable {
+            fillWidth()
+            height(156.dp)
+        }
     ) {
         MedicineImage(
             image = image,
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(128.dp)
-                .border(1.dp, MaterialTheme.colorScheme.onSurface, MaterialTheme.shapes.medium)
-                .padding(8.dp)
+            modifier = Modifier.styleable {
+                fillHeight()
+                width(128.dp)
+                contentPadding(8.dp)
+
+                borderWidth(1.dp)
+                borderColor(LocalMaterialTheme.currentValue.colorScheme.onSurface)
+
+                shape(LocalMaterialTheme.currentValue.shapes.medium)
+            }
         )
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
@@ -261,7 +274,7 @@ private fun SchemaType(state: IntakeState, event: (IntakeEvent) -> Unit) = Outli
     ExposedDropdownMenuBox(state.showSchemaTypePicker, {}) {
         ListItem(
             modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-            headlineContent = { Text(stringResource(R.string.intake_text_schema_type)) },
+            content = { Text(stringResource(R.string.intake_text_schema_type)) },
             supportingContent = { Text(stringResource(state.schemaType.title)) },
             trailingContent = state.default.let {
                 {
@@ -291,7 +304,7 @@ private fun DaysPicker(state: IntakeState, event: (IntakeEvent) -> Unit) = Outli
     val locale = Locale.current.platformLocale
 
     ListItem(
-        headlineContent = { Text(stringResource(R.string.text_repeat)) },
+        content = { Text(stringResource(R.string.text_repeat)) },
         supportingContent = {
             Text(
                 text = if (state.pickedDays.size == DayOfWeek.entries.size) stringResource(R.string.text_every_day)
@@ -308,7 +321,7 @@ private fun DaysPicker(state: IntakeState, event: (IntakeEvent) -> Unit) = Outli
             .fillMaxWidth()
             .background(ListItemDefaults.containerColor)
     ) {
-        DayOfWeek.entries.sorted().forEach { day ->
+        DayOfWeek.entries.forEach { day ->
             FilterChip(
                 shape = CircleShape,
                 selected = day in state.pickedDays,
@@ -328,7 +341,7 @@ private fun DaysPicker(state: IntakeState, event: (IntakeEvent) -> Unit) = Outli
 private fun Amount(state: IntakeState, event: (IntakeEvent) -> Unit) =
     OutlinedCard(Modifier.animateContentSize()) {
         ListItem(
-            headlineContent = { Text(stringResource(R.string.intake_text_amount)) },
+            content = { Text(stringResource(R.string.intake_text_amount)) },
             supportingContent = {
                 Text(
                     text = stringResource(
@@ -345,7 +358,7 @@ private fun Amount(state: IntakeState, event: (IntakeEvent) -> Unit) =
         HorizontalDivider()
 
         ListItem(
-            headlineContent = { Text(stringResource(R.string.text_same_amount)) },
+            content = { Text(stringResource(R.string.text_same_amount)) },
             supportingContent = {
                 Text(stringResource(if (state.sameAmount) R.string.text_on else R.string.text_off))
             },
@@ -369,7 +382,7 @@ private fun Amount(state: IntakeState, event: (IntakeEvent) -> Unit) =
             HorizontalDivider()
             ListItem(
                 leadingContent = { VectorIcon(R.drawable.vector_medicine) },
-                headlineContent = {
+                content = {
                     TextField(
                         state = textFieldState,
                         readOnly = state.default,
@@ -395,7 +408,7 @@ private fun Interval(state: IntakeState, event: (IntakeEvent) -> Unit) =
         ExposedDropdownMenuBox(state.showIntervalTypePicker, {}) {
             ListItem(
                 modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                headlineContent = { Text(stringResource(R.string.intake_text_interval)) },
+                content = { Text(stringResource(R.string.intake_text_interval)) },
                 supportingContent = { Text(stringResource(state.intervalType.title)) },
                 trailingContent = state.default.let {
                     {
@@ -431,7 +444,7 @@ private fun Interval(state: IntakeState, event: (IntakeEvent) -> Unit) =
             HorizontalDivider()
             ListItem(
                 leadingContent = { Text(stringResource(R.string.text_every)) },
-                headlineContent = {
+                content = {
                     OutlinedTextField(
                         state = textFieldState,
                         readOnly = state.default,
@@ -461,7 +474,7 @@ private fun Period(state: IntakeState, event: (IntakeEvent) -> Unit) =
             ExposedDropdownMenuBox(state.showPeriodTypePicker, {}, Modifier.weight(1f)) {
                 ListItem(
                     modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                    headlineContent = { Text(stringResource(R.string.intake_text_period)) },
+                    content = { Text(stringResource(R.string.intake_text_period)) },
                     supportingContent = { Text(stringResource(state.periodType.title)) },
                     trailingContent = state.default.let {
                         {
@@ -533,7 +546,7 @@ private fun Period(state: IntakeState, event: (IntakeEvent) -> Unit) =
             HorizontalDivider()
             Row {
                 ListItem(
-                    headlineContent = { Text(stringResource(R.string.intake_text_start)) },
+                    content = { Text(stringResource(R.string.intake_text_start)) },
                     supportingContent = {
                         Text(
                             softWrap = false,
@@ -566,7 +579,7 @@ private fun Period(state: IntakeState, event: (IntakeEvent) -> Unit) =
                     )
                 )
                 ListItem(
-                    headlineContent = { Text(stringResource(R.string.intake_text_finish)) },
+                    content = { Text(stringResource(R.string.intake_text_finish)) },
                     supportingContent = {
                         Text(
                             softWrap = false,
@@ -605,7 +618,7 @@ private fun Period(state: IntakeState, event: (IntakeEvent) -> Unit) =
 @Composable
 private fun Food(state: IntakeState, event: (IntakeEvent) -> Unit) = OutlinedCard {
     ListItem(
-        headlineContent = { Text(stringResource(R.string.intake_text_food)) },
+        content = { Text(stringResource(R.string.intake_text_food)) },
         supportingContent = {
             Text(
                 text = stringResource(
@@ -616,7 +629,7 @@ private fun Food(state: IntakeState, event: (IntakeEvent) -> Unit) = OutlinedCar
         }
     )
     ListItem(
-        headlineContent = {
+        content = {
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceAround, Alignment.CenterVertically) {
                 FoodType.entries.forEach { type ->
                     FilterChip(
@@ -642,7 +655,7 @@ private fun Food(state: IntakeState, event: (IntakeEvent) -> Unit) = OutlinedCar
 private fun Time(state: IntakeState, event: (IntakeEvent) -> Unit) =
     OutlinedCard(Modifier.animateContentSize()) {
         ListItem(
-            headlineContent = { Text(stringResource(R.string.intake_text_time)) },
+            content = { Text(stringResource(R.string.intake_text_time)) },
             supportingContent = {
                 Text(
                     text = pluralStringResource(
@@ -728,7 +741,7 @@ private fun Time(state: IntakeState, event: (IntakeEvent) -> Unit) =
 
                     ListItem(
                         modifier = Modifier.weight(1f),
-                        headlineContent = {
+                        content = {
                             TextField(
                                 state = textFieldState,
                                 modifier = Modifier.fillMaxHeight(),
@@ -777,7 +790,7 @@ private fun Extra(state: IntakeState, event: (IntakeEvent) -> Unit) {
 
     OutlinedCard {
         ListItem(
-            headlineContent = { Text(stringResource(R.string.intake_text_extra)) },
+            content = { Text(stringResource(R.string.intake_text_extra)) },
             supportingContent = {
                 Text(
                     text = stringResource(

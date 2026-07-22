@@ -1,10 +1,11 @@
-@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationStyleApi::class)
 
 package ru.application.homemedkit.ui.elements
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
+import androidx.compose.foundation.style.contentPadding
+import androidx.compose.foundation.style.fillWidth
+import androidx.compose.foundation.style.styleable
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,8 +17,8 @@ import androidx.compose.ui.unit.dp
 fun TextDate(date: String) = Text(
     text = date,
     style = MaterialTheme.typography.titleMediumEmphasized,
-    modifier = Modifier
-        .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.background)
-        .padding(16.dp, 12.dp)
+    modifier = Modifier.styleable {
+        fillWidth()
+        contentPadding(16.dp, 12.dp)
+    }
 )

@@ -119,7 +119,7 @@ class CameraConfig(private val context: Context) {
 
     fun setZoom() = with(camera) {
         val currentZoom = cameraInfo.zoomState.value?.zoomRatio ?: 1f
-        val newZoom = if (currentZoom == 1f) 2f.coerceIn(minZoom, maxZoom)
+        val newZoom = if (currentZoom <= 1f) 2f.coerceIn(minZoom, maxZoom)
         else min(1f, minZoom)
 
         cameraControl.setZoomRatio(newZoom)

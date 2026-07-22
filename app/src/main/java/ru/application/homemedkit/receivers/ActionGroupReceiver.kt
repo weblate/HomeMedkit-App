@@ -19,10 +19,8 @@ class ActionGroupReceiver : BroadcastReceiver() {
         val manager = NotificationManagerCompat.from(context)
 
         manager.cancel(Int.MAX_VALUE)
-        manager.activeNotifications
-            .filter { it.packageName == context.packageName }
-            .filter { it.notification.extras.containsKey(IS_ENOUGH_IN_STOCK) }
-            .forEach { item ->
+        for (item in manager.activeNotifications) {
+            if (item.packageName == context.packageName && item.notification.extras.containsKey(IS_ENOUGH_IN_STOCK)) {
                 val medicineId = item.notification.extras.getLong(ID)
                 val takenId = item.notification.extras.getLong(TAKEN_ID)
                 val amount = item.notification.extras.getDouble(BLANK)
@@ -34,6 +32,7 @@ class ActionGroupReceiver : BroadcastReceiver() {
                     database.medicineDAO().intakeMedicine(medicineId, amount)
                 }
             }
+        }
 
         context.sendBroadcast(Intent(ACTION_CLOSE_ALL_FULL_SCREEN_INTENTS))
     }

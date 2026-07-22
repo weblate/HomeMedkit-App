@@ -9,6 +9,6 @@ enum class Period(val days: Int, @StringRes val title: Int) {
     INDEFINITE(1825, R.string.intake_period_indef);
 
     companion object {
-        fun getValue(days: Int) = entries.find { it.days == days } ?: OTHER
+        fun getValue(days: Int) = entries.firstOrNull { it.days == days } ?: OTHER
     }
 }

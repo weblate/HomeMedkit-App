@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalFoundationStyleApi::class
+)
 
 package ru.application.homemedkit.ui.elements
 
@@ -11,9 +13,12 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
+import androidx.compose.foundation.style.contentPadding
+import androidx.compose.foundation.style.externalPadding
+import androidx.compose.foundation.style.styleable
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,10 +42,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.application.homemedkit.R
 import ru.application.homemedkit.utils.BLANK
-import ru.application.homemedkit.utils.extensions.collectLatestChanged
 
 @Composable
 fun ScaffoldSearchBar(
@@ -51,13 +56,15 @@ fun ScaffoldSearchBar(
     actions: @Composable (RowScope.() -> Unit)? = null,
     menuRow: @Composable (() -> Unit)? = null,
     floatingActionButton: (@Composable BoxScope.() -> Unit)? = null,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val searchBarState = rememberSearchBarState()
     val textFieldState = rememberTextFieldState(search)
 
     LaunchedEffect(textFieldState) {
-        snapshotFlow { textFieldState.text.toString() }.collectLatestChanged(onSearch)
+        snapshotFlow { textFieldState.text.toString() }.collectLatest {
+            onSearch(it)
+        }
     }
 
     LaunchedEffect(search) {
@@ -121,13 +128,23 @@ private fun InteractiveAppBarWithSearch(
             .windowInsetsPadding(windowInsets)
     ) {
         Row(
-            modifier = Modifier.padding(4.dp, 8.dp),
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.styleable {
+                contentPadding(4.dp, 8.dp)
+            }
         ) {
             navigationIcon?.let {
-                Box(Modifier.padding(start = 4.dp, end = 8.dp)) {
-                    it()
-                }
+                Box(
+                    content = { it() },
+                    modifier = Modifier.styleable {
+                        externalPadding(
+                            start = 4.dp,
+                            top = 0.dp,
+                            end = 8.dp,
+                            bottom = 0.dp
+                        )
+                    }
+                )
             }
 
             Box(Modifier.weight(1f)) {
@@ -143,7 +160,16 @@ private fun InteractiveAppBarWithSearch(
             }
 
             actions?.let {
-                Box(Modifier.padding(start = 8.dp, end = 4.dp)) {
+                Box(
+                    modifier = Modifier.styleable {
+                        externalPadding(
+                            start = 8.dp,
+                            top = 0.dp,
+                            end = 4.dp,
+                            bottom = 0.dp
+                        )
+                    }
+                ) {
                     Row(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,

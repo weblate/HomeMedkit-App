@@ -3,7 +3,6 @@ package ru.application.homemedkit.utils
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldBuffer
-import androidx.compose.foundation.text.input.delete
 import ru.application.homemedkit.data.dto.Image
 import ru.application.homemedkit.network.Network
 import ru.application.homemedkit.utils.di.Preferences
@@ -37,43 +36,44 @@ suspend fun getMedicineImages(
     }
 }
 
-fun shiftCipher(input: String, shift: Int = 10) = input.map { (it.code + shift).toChar() }
-    .joinToString(BLANK)
+fun shiftCipher(input: String, shift: Int = 10) = CharArray(input.length) { input[it] + shift }.concatToString()
 
 object DecimalAmountInputTransformation : InputTransformation {
     override fun TextFieldBuffer.transformInput() {
-        if (asCharSequence().isNotEmpty()) {
-            val decimalAmount = asCharSequence().toString().replace(',', '.')
+        for (i in length - 1 downTo 0) {
+            if (charAt(i) == ',') {
+                replace(i, i + 1, ".")
+            }
+        }
 
-            if (decimalAmount.toDoubleOrNull() != null) {
-                replace(0, length, decimalAmount)
-            } else {
+        val text = toString()
+        if (text.isNotEmpty()) {
+            if (text.toDoubleOrNull() == null) {
                 revertAllChanges()
             }
-        } else {
-            delete(0, length)
         }
     }
 }
 
 object DecimalAmountOutputTransformation : OutputTransformation {
     override fun TextFieldBuffer.transformOutput() {
-        val transformedText = asCharSequence().toString().replace('.', ',')
-
-        replace(0, length, transformedText)
+        for (i in length - 1 downTo 0) {
+            if (charAt(i) == '.') {
+                replace(i, i + 1, ",")
+            }
+        }
     }
 }
 
 object DaysInputTransformation : InputTransformation {
     override fun TextFieldBuffer.transformInput() {
-        if (asCharSequence().toString().isNotEmpty()) {
-            val newValue = asCharSequence().toString().toIntOrNull()
+        val text = toString()
+        if (text.isNotEmpty()) {
+            val days = text.toIntOrNull()
 
-            if (newValue == null || newValue <= 0) {
+            if (days == null || days <= 0) {
                 revertAllChanges()
             }
-        } else {
-            delete(0, length)
         }
     }
 }
