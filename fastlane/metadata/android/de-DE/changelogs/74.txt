@@ -1,0 +1,2 @@
+— Fehler behoben, durch den die Zeichenfolge beim Löschen der Ziffern von Bruchzahlen vollständig gelöscht wurde.
+— Fehler behoben, durch den der zweifache Zoom der Kamera beim doppelten Tippen auf den Bildschirm nicht funktionierte.
