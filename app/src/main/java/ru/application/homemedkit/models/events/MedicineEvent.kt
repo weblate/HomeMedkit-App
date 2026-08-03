@@ -9,6 +9,7 @@ sealed interface MedicineEvent {
     data class SetProductName(val productName: String) : MedicineEvent
     data class SetNameAlias(val alias: String) : MedicineEvent
     data class SetExpDate(val month: Int, val year: Int) : MedicineEvent
+    data object ClearExpDate : MedicineEvent
     data class SetPackageDate(val timestamp: Long) : MedicineEvent
     data class SetFormName(val formName: String) : MedicineEvent
     data class SetDoseName(val doseName: String) : MedicineEvent

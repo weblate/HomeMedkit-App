@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -36,6 +37,7 @@ import ru.application.homemedkit.utils.Formatter
 import ru.application.homemedkit.utils.ResourceText
 import ru.application.homemedkit.utils.di.AlarmManager
 import ru.application.homemedkit.utils.di.Database
+import ru.application.homemedkit.utils.di.Preferences
 import ru.application.homemedkit.utils.enums.IntakeTab
 import ru.application.homemedkit.utils.extensions.orDefault
 import ru.application.homemedkit.utils.extensions.toIntake
@@ -67,13 +69,12 @@ class IntakesViewModel : BaseViewModel<IntakesState, IntakesEvent>() {
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     val schedule = state.flatMapLatest { query ->
-        alarmDAO.getFlow(query.search)
-            .map { list ->
-                list.groupBy { Formatter.getDateTime(it.trigger).toLocalDate().toEpochDay() }
-                    .entries
-                    .sortedBy { it.key }
-                    .map { it.toIntakeSchedule(currentYear) }
-            }
+        combine(alarmDAO.getFlow(query.search), Preferences.showAmountScheduledFlow) { list, showAmount ->
+            list.groupBy { Formatter.getDateTime(it.trigger).toLocalDate().toEpochDay() }
+                .entries
+                .sortedBy { it.key }
+                .map { it.toIntakeSchedule(currentYear, showAmount) }
+        }
             .flowOn(Dispatchers.Default)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 

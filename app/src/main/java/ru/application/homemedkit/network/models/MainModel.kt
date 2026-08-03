@@ -35,6 +35,9 @@ data class MainModel(
 
     val pharmacyInfo: PharmacyData?
         get() = screen?.items?.firstOrNull { it.itemType == "pharmacy_search" }?.pharmacyData
+
+    val isValidCategory: Boolean
+        get() = category in setOf("drugs", "bio", "antiseptic")
 }
 
 @Serializable

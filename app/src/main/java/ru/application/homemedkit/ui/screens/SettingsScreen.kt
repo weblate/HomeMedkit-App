@@ -113,6 +113,7 @@ import ru.application.homemedkit.utils.KEY_FIXING
 import ru.application.homemedkit.utils.KEY_IMPORT_EXPORT
 import ru.application.homemedkit.utils.KEY_KITS
 import ru.application.homemedkit.utils.KEY_PERMISSIONS
+import ru.application.homemedkit.utils.KEY_SHOW_STOCK_IN_SCHEDULED
 import ru.application.homemedkit.utils.KEY_USE_ALARM_CLOCK
 import ru.application.homemedkit.utils.KEY_USE_VIBRATION_SCAN
 import ru.application.homemedkit.utils.di.AlarmManager
@@ -203,6 +204,13 @@ fun SettingsScreen(onAuthClick: () -> Unit) {
                 key = KEY_USE_VIBRATION_SCAN,
                 defaultValue = false,
                 title = { Text(stringResource(R.string.preference_use_vibration_scan)) },
+                summary = { Text(stringResource(if (it) R.string.text_on else R.string.text_off)) }
+            )
+
+            switchPreference(
+                key = KEY_SHOW_STOCK_IN_SCHEDULED,
+                defaultValue = false,
+                title = { Text(stringResource(R.string.preference_show_stock_scheduled)) },
                 summary = { Text(stringResource(if (it) R.string.text_on else R.string.text_off)) }
             )
 

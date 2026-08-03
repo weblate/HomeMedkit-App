@@ -22,6 +22,8 @@ import ru.application.homemedkit.models.states.IntakeState
 import ru.application.homemedkit.models.states.TakenState
 import ru.application.homemedkit.utils.Formatter
 import ru.application.homemedkit.utils.ResourceText
+import ru.application.homemedkit.utils.buildResourceText
+import ru.application.homemedkit.utils.enums.DoseType
 import ru.application.homemedkit.utils.enums.IntakeExtra
 import ru.application.homemedkit.utils.enums.Interval
 import ru.application.homemedkit.utils.enums.Period
@@ -136,15 +138,16 @@ fun IntakeTaken.toTakenModel() = TakenModel(
     image = image,
     time = Formatter.timeFormat(trigger),
     taken = taken,
-    doseAmount = ResourceText.StringResource(
-        R.string.intake_text_quantity,
-        formName.run {
-            if (isNotEmpty()) Formatter.formFormat(this)
-            else ResourceText.StringResource(R.string.text_amount)
-        },
-        Formatter.decimalFormat(amount),
-        ResourceText.StringResource(doseType.title)
-    )
+    doseAmount = buildResourceText {
+        if (formName.isNotEmpty()) {
+            append(Formatter.formFormat(formName))
+        } else {
+            append(ResourceText.StringResource(R.string.text_amount))
+        }
+
+        append(": ${Formatter.decimalFormat(amount)} ")
+        append(ResourceText.StringResource(doseType.title))
+    }
 )
 
 fun Map.Entry<Long, List<IntakeTaken>>.toIntakePast(currentYear: Int) = IntakePast(
@@ -155,29 +158,48 @@ fun Map.Entry<Long, List<IntakeTaken>>.toIntakePast(currentYear: Int) = IntakePa
     intakes = value.map(IntakeTaken::toTakenModel)
 )
 
-fun Schedule.toScheduleModel() = ScheduleModel(
+fun Schedule.toScheduleModel(showAmountScheduled: Boolean) = ScheduleModel(
     id = alarmId,
     alarmId = alarmId,
     title = nameAlias.ifEmpty(::productName),
     image = image,
     time = Formatter.timeFormat(trigger),
-    doseAmount = ResourceText.StringResource(
-        R.string.intake_text_quantity,
-        prodFormNormName.run {
-            if (isNotEmpty()) Formatter.formFormat(this)
-            else ResourceText.StringResource(R.string.text_amount)
-        },
-        Formatter.decimalFormat(amount),
-        ResourceText.StringResource(doseType.title)
-    )
+    doseAmount = buildResourceText {
+        if (prodFormNormName.isNotEmpty()) {
+            append(Formatter.formFormat(prodFormNormName))
+        } else {
+            append(ResourceText.StringResource(R.string.text_amount))
+        }
+
+        append(": ${Formatter.decimalFormat(amount)} ")
+
+        if (doseType != DoseType.UNKNOWN) {
+            append(ResourceText.StringResource(doseType.title))
+            append(" ")
+        }
+
+        if (showAmountScheduled) {
+            append("(${Formatter.decimalFormat(prodAmount)}")
+
+            if (doseType != DoseType.UNKNOWN) {
+                append(" ")
+                append(ResourceText.StringResource(doseType.title))
+            }
+
+            append(")")
+        }
+    }
 )
 
-fun Map.Entry<Long, List<Schedule>>.toIntakeSchedule(currentYear: Int) = IntakeSchedule(
+fun Map.Entry<Long, List<Schedule>>.toIntakeSchedule(
+    currentYear: Int,
+    showAmountScheduled: Boolean
+) = IntakeSchedule(
     epochDay = key,
     date = LocalDate.ofEpochDay(key).run {
         format(if (currentYear == year) Formatter.FORMAT_D_MMMM_E else Formatter.FORMAT_LONG)
     },
-    intakes = value.map(Schedule::toScheduleModel)
+    intakes = value.map { it.toScheduleModel(showAmountScheduled) }
 )
 
 fun IntakeTakenFull.toTakenState(): TakenState {

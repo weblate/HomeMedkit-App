@@ -53,6 +53,9 @@ class Preferences internal constructor(context: Context) {
     val checkExpirationFlow: Flow<Boolean>
         get() = preferences.getFlow(KEY_CHECK_EXP_DATE, false)
 
+    val showAmountScheduledFlow: Flow<Boolean>
+        get() = preferences.getFlow(KEY_SHOW_STOCK_IN_SCHEDULED, false)
+
     val useAlarmClock: Boolean
         get() = preferences.getBoolean(KEY_USE_ALARM_CLOCK, false)
 

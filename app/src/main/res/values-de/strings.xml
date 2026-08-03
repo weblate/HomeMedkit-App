@@ -14,6 +14,7 @@
     <string name="preference_sorting_type">Anordnung der Medikamente</string>
     <string name="preference_confirm_exit">Verlassen der App bestätigen</string>
     <string name="preference_use_vibration_scan">Verwenden Sie die Vibrationsrückmeldung beim Scannen von Medikamentencodes</string>
+    <string name="preference_show_stock_scheduled">Lagerbestand in geplanten Einnahmen anzeigen</string>
     <string name="preference_download_images">Bilder der Medikamente herunterladen</string>
     <string name="preference_check_expiration_date">Verfallsdatum der Medikamente prüfen</string>
     <string name="preference_use_alarm_clock">Alarm statt Benachrichtigung verwenden</string>

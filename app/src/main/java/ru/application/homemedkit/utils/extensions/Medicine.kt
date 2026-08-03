@@ -93,7 +93,9 @@ fun MedicineState.toMedicine() = Medicine(
 fun MainModel.asMedicine(): Medicine {
     val form = pharmacyInfo?.form ?: attributes["Форма выпуска"].orEmpty()
     val dose = pharmacyInfo?.dosage ?: attributes["Объём / Масса единицы потребления"].orEmpty()
-    val quantity = pharmacyInfo?.quantity ?: attributes["Количество единиц потребления"]
+    val quantity = pharmacyInfo?.quantity
+        ?: attributes["Количество единиц потребления"]
+        ?: attributes["Объём"]
 
     val parsedAmount = quantity
         ?.substringBefore(' ')

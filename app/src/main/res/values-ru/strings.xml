@@ -15,6 +15,7 @@
     <string name="preference_sorting_type">Сортировка лекарств по</string>
     <string name="preference_confirm_exit">Подтверждать выход из приложения</string>
     <string name="preference_use_vibration_scan">Использовать виброотклик при сканировании кодов лекарств</string>
+    <string name="preference_show_stock_scheduled">Отображать количество лекарства в запланированным приёмах</string>
     <string name="preference_download_images">Загружать изображения лекарств</string>
     <string name="preference_check_expiration_date">Проверка срока годности лекарств</string>
     <string name="preference_use_alarm_clock">Использовать будильник вместо уведомлений</string>

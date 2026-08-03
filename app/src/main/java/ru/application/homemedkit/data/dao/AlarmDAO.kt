@@ -13,7 +13,7 @@ interface AlarmDAO : BaseDAO<Alarm> {
     @Query(
         """
         SELECT alarms.alarmId, alarms.`trigger`, alarms.amount, images.image, 
-        medicines.nameAlias, medicines.productName, medicines.prodFormNormName, medicines.doseType
+        medicines.nameAlias, medicines.productName, medicines.prodFormNormName, medicines.doseType, medicines.prodAmount
         FROM alarms
         JOIN intakes ON intakes.intakeId = alarms.intakeId 
         JOIN medicines ON medicines.id = intakes.medicineId 

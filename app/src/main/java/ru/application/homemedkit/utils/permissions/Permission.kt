@@ -7,6 +7,7 @@ import android.Manifest.permission.SCHEDULE_EXACT_ALARM
 import android.Manifest.permission.USE_FULL_SCREEN_INTENT
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -76,9 +77,24 @@ class Permission(private val context: Context, private val permission: String) :
             else -> ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
         }
 
-        showRationale = !granted && ActivityCompat.shouldShowRequestPermissionRationale(context as Activity, permission)
+        val activity = context.findActivity()
+
+        showRationale = !granted &&
+                activity != null &&
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
 
         return granted
+    }
+
+    private fun Context.findActivity(): Activity? {
+        var currentContext = this
+
+        while (currentContext is ContextWrapper) {
+            if (currentContext is Activity) return currentContext
+            currentContext = currentContext.baseContext
+        }
+
+        return null
     }
 }
 

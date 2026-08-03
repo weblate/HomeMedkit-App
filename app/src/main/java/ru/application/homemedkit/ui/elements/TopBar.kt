@@ -20,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.application.homemedkit.R
@@ -36,22 +35,17 @@ fun TopBarActions(
     onNavigate: (() -> Unit)? = null
 ) {
     @Composable
-    fun LocalDropDownItem(
-        @StringRes text: Int,
-        @DrawableRes icon: Int,
-        shape: Shape,
-        onClick: () -> Unit
-    ) = DropdownMenuItem(
-        onClick = onClick,
-        shape = shape,
-        trailingIcon = { VectorIcon(icon) },
-        text = {
-            Text(
-                text = stringResource(text),
-                modifier = Modifier.widthIn(112.dp, 280.dp)
-            )
-        }
-    )
+    fun LocalDropDownItem(@StringRes text: Int, @DrawableRes icon: Int, onClick: () -> Unit) =
+        DropdownMenuItem(
+            onClick = onClick,
+            trailingIcon = { VectorIcon(icon) },
+            text = {
+                Text(
+                    text = stringResource(text),
+                    modifier = Modifier.widthIn(112.dp, 280.dp)
+                )
+            }
+        )
 
     if (isDefault) {
         var expanded by remember { mutableStateOf(false) }
@@ -78,7 +72,6 @@ fun TopBarActions(
                     LocalDropDownItem(
                         text = R.string.text_to_duplicate,
                         icon = R.drawable.vector_duplicate,
-                        shape = MenuDefaults.leadingItemShape,
                         onClick = {
                             onDuplicate()
                             expanded = false
@@ -89,7 +82,6 @@ fun TopBarActions(
                 LocalDropDownItem(
                     text = R.string.text_edit,
                     icon = R.drawable.vector_edit,
-                    shape = if (onDuplicate == null) MenuDefaults.leadingItemShape else MenuDefaults.middleItemShape,
                     onClick = setModifiable
                 )
 
@@ -97,7 +89,6 @@ fun TopBarActions(
                     LocalDropDownItem(
                         text = R.string.text_download_photos,
                         icon = R.drawable.vector_download,
-                        shape = MenuDefaults.middleItemShape,
                         onClick = {
                             onReloadImages()
                             expanded = false
@@ -108,7 +99,6 @@ fun TopBarActions(
                 LocalDropDownItem(
                     text = R.string.text_delete,
                     icon = R.drawable.vector_delete,
-                    shape = MenuDefaults.trailingItemShape,
                     onClick = {
                         onShowDialog()
                         expanded = false

@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -72,6 +73,7 @@ import ru.application.homemedkit.utils.permissions.rememberPermissionState
 @Composable
 fun ScannerScreen(model: ScannerViewModel = viewModel(), onBack: () -> Unit, onNavigate: (Screen) -> Unit) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val filesDir = context.filesDir
 
     val state by model.state.collectAsStateWithLifecycle()
@@ -95,7 +97,7 @@ fun ScannerScreen(model: ScannerViewModel = viewModel(), onBack: () -> Unit, onN
                         context.vibrate(200L)
                     }
 
-                    val result = snackbarHost.showSnackbar(context.getString(result.message))
+                    val result = snackbarHost.showSnackbar(resources.getString(result.message))
                     if (result == SnackbarResult.Dismissed) {
                         model.setDefault()
                     }

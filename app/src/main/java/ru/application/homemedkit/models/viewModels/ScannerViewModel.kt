@@ -67,7 +67,7 @@ class ScannerViewModel : BaseViewModel<ScannerState, Unit>() {
                         is Response.Success -> {
                             val model = response.model
 
-                            if (model.category == "drugs" || model.category == "bio") {
+                            if (model.isValidCategory) {
                                 val medicine = model.asMedicine().copy(cis = code)
 
                                 val id = dao.insert(medicine)

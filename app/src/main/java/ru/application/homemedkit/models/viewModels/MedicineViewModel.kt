@@ -278,6 +278,12 @@ class MedicineViewModel(
             is MedicineEvent.PickKit -> updateState { it.copy(kits = it.kits.toggle(event.kit)) }
 
             MedicineEvent.ClearKit -> updateState { it.copy(kits = emptySet()) }
+            MedicineEvent.ClearExpDate -> updateState {
+                it.copy(
+                    expDate = -1L,
+                    expDateString = BLANK
+                )
+            }
 
             is MedicineEvent.SetIcon -> updateState {
                 it.copy(
@@ -330,8 +336,7 @@ class MedicineViewModel(
             MedicineEvent.ClearPackageDate -> updateState {
                 it.copy(
                     dateOpened = -1L,
-                    dateOpenedString = BLANK,
-                    dialogState = null
+                    dateOpenedString = BLANK
                 )
             }
 

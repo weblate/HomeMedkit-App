@@ -14,6 +14,7 @@
     <string name="preference_sorting_type">Medication sorting</string>
     <string name="preference_confirm_exit">Confirm exit from app</string>
     <string name="preference_use_vibration_scan">Use a vibration response when scanning medication codes</string>
+    <string name="preference_show_stock_scheduled">Show stock amount in scheduled intakes</string>
     <string name="preference_download_images">Download medication images</string>
     <string name="preference_check_expiration_date">Check the expiration date of medications</string>
     <string name="preference_use_alarm_clock">Use alarm clock instead of notifications</string>
@@ -150,7 +151,6 @@
     <string name="intake_text_interval">Interval</string>
     <string name="intake_text_not_taken">Not taken</string>
     <string name="intake_text_period">Period</string>
-    <string name="intake_text_quantity" translatable="false">%1$s: %2$s %3$s</string>
     <string name="intake_text_schema_type">Schema type</string>
     <string name="intake_text_taken">Taken</string>
     <string name="intake_text_time">Time</string>

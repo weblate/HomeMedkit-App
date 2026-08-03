@@ -1,20 +1,23 @@
 package ru.application.homemedkit.dialogs
 
-import android.icu.text.DateFormatSymbols
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
+import androidx.compose.foundation.style.rememberUpdatedStyleState
+import androidx.compose.foundation.style.selected
+import androidx.compose.foundation.style.size
+import androidx.compose.foundation.style.styleable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,15 +25,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -40,25 +43,33 @@ import ru.application.homemedkit.R.string.text_save
 import ru.application.homemedkit.ui.elements.IconButton
 import ru.application.homemedkit.ui.elements.VectorIcon
 import java.time.LocalDate
+import java.time.Month
+import java.time.format.TextStyle
 
+@OptIn(ExperimentalFoundationStyleApi::class)
 @Composable
 fun MonthYear(
     confirm: (Int, Int) -> Unit,
     cancel: () -> Unit,
-    currentMonth: Int = LocalDate.now().month.value - 1,
+    currentMonth: Int = LocalDate.now().monthValue,
     currentYear: Int = LocalDate.now().year
 ) {
-    val months = DateFormatSymbols.getInstance().shortMonths
+    val locale = remember { Locale.current.platformLocale }
 
-    var month by remember { mutableStateOf(months[currentMonth]) }
-    var year by remember { mutableIntStateOf(currentYear) }
+    val selectedColor = MaterialTheme.colorScheme.secondary
+
+    var selectedMonth by remember { mutableIntStateOf(currentMonth) }
+    var selectedYear by remember { mutableIntStateOf(currentYear) }
 
     Dialog(cancel) {
-        Surface(shape = CardDefaults.shape) {
-            Column(Modifier.padding(16.dp), Arrangement.spacedBy(16.dp)) {
+        Surface(
+            shape = MaterialTheme.shapes.extraLarge,
+            color = MaterialTheme.colorScheme.surfaceContainerHigh
+        ) {
+            Column(Modifier.padding(24.dp), Arrangement.spacedBy(16.dp)) {
                 Row(Modifier.fillMaxWidth(), Arrangement.Center, Alignment.CenterVertically) {
                     IconButton(
-                        onClick = { year-- },
+                        onClick = { selectedYear-- },
                         content = {
                             VectorIcon(
                                 icon = R.drawable.vector_keyboard_arrow_left,
@@ -68,15 +79,14 @@ fun MonthYear(
                     )
 
                     Text(
-                        modifier = Modifier.padding(horizontal = 12.dp),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        text = year.toString(),
+                        text = selectedYear.toString(),
                         fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     IconButton(
-                        onClick = { year++ },
+                        onClick = { selectedYear++ },
                         content = {
                             VectorIcon(
                                 icon = R.drawable.vector_keyboard_arrow_right,
@@ -86,47 +96,62 @@ fun MonthYear(
                     )
                 }
 
-                Card(Modifier.fillMaxWidth()) {
-                    FlowRow(Modifier.fillMaxWidth(), Arrangement.Center) {
-                        months.forEach {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .clip(CircleShape)
-                                    .size(76.dp)
-                                    .clickable { month = it }
-                            ) {
-                                val boxSize by animateDpAsState(if (month == it) 60.dp else 0.dp)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(Month.entries, Month::name) { month ->
+                        val interactionSource = remember(::MutableInteractionSource)
+                        val styleState = rememberUpdatedStyleState(interactionSource) {
+                            it.isSelected = selectedMonth == month.value
+                        }
 
-                                Box(
-                                    modifier = Modifier
-                                        .size(boxSize)
-                                        .background(
-                                            shape = CircleShape,
-                                            color = if (month == it) MaterialTheme.colorScheme.secondary
-                                            else Color.Transparent
-                                        )
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .selectable(
+                                    indication = null,
+                                    selected = styleState.isSelected,
+                                    role = Role.RadioButton,
+                                    interactionSource = interactionSource,
+                                    onClick = { selectedMonth = month.value }
                                 )
+                                .styleable(styleState) {
+                                    size(60.dp)
+                                    clip()
+                                    shape(CircleShape)
 
-                                Text(
-                                    text = it.uppercase().removeSuffix("."),
-                                    fontWeight = FontWeight.Medium,
-                                    color = if (month == it) MaterialTheme.colorScheme.onSecondary
-                                    else MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
-                            }
+                                    background(Color.Transparent)
+
+                                    selected {
+                                        background(selectedColor)
+                                    }
+                                }
+                        ) {
+                            Text(
+                                fontWeight = FontWeight.Medium,
+                                color = if (styleState.isSelected) MaterialTheme.colorScheme.onSecondary
+                                else MaterialTheme.colorScheme.onSurfaceVariant,
+                                text = month.getDisplayName(TextStyle.SHORT, locale)
+                                    .uppercase()
+                                    .removeSuffix(".")
+                            )
                         }
                     }
                 }
 
                 Row(Modifier.fillMaxWidth(), Arrangement.End) {
-                    TextButton(cancel) {
-                        Text(stringResource(text_cancel))
-                    }
+                    TextButton(
+                        onClick = cancel,
+                        content = { Text(stringResource(text_cancel)) }
+                    )
 
-                    TextButton({ confirm(months.indexOf(month) + 1, year) }) {
-                        Text(stringResource(text_save))
-                    }
+                    TextButton(
+                        onClick = { confirm(selectedMonth, selectedYear) },
+                        content = { Text(stringResource(text_save)) }
+                    )
                 }
             }
         }

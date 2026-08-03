@@ -108,6 +108,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -160,6 +161,7 @@ import kotlin.uuid.ExperimentalUuidApi
 @Composable
 fun MedicineScreen(model: MedicineViewModel, onBack: () -> Unit, onGoToIntake: (Long) -> Unit) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val filesDir = context.filesDir
 
     val scope = rememberCoroutineScope()
@@ -191,7 +193,7 @@ fun MedicineScreen(model: MedicineViewModel, onBack: () -> Unit, onGoToIntake: (
                 is MedicineAction.ShowSnackbar -> {
                     snackbarHost.showSnackbar(
                         visuals = CustomSnackbar(
-                            message = context.getString(result.message),
+                            message = resources.getString(result.message),
                             isError = result != MedicineAction.ShowSnackbar.OnMakeDuplicate
                         )
                     )
@@ -451,8 +453,7 @@ fun MedicineScreen(model: MedicineViewModel, onBack: () -> Unit, onGoToIntake: (
 
         MedicineDialogState.PackageDate -> DatePicker(
             onDismiss = { model.onEvent(MedicineEvent.ToggleDialog(MedicineDialogState.PackageDate)) },
-            onSelect = { model.onEvent(MedicineEvent.SetPackageDate(it)) },
-            onClear = { model.onEvent(MedicineEvent.ClearPackageDate) }
+            onSelect = { model.onEvent(MedicineEvent.SetPackageDate(it)) }
         )
 
         MedicineDialogState.Delete -> DialogDelete(
@@ -494,6 +495,7 @@ private fun Summary(state: MedicineState, onEvent: (MedicineEvent) -> Unit) {
         @StringRes label: Int,
         @StringRes placeholder: Int,
         modifier: Modifier = Modifier,
+        trailingIcon: @Composable (() -> Unit)? = null,
     ) {
         val interactionSource = remember(::MutableInteractionSource)
 
@@ -513,6 +515,7 @@ private fun Summary(state: MedicineState, onEvent: (MedicineEvent) -> Unit) {
             readOnly = true,
             singleLine = true,
             placeholder = { Text(stringResource(placeholder)) },
+            trailingIcon = trailingIcon,
             label = {
                 Text(
                     text = stringResource(label),
@@ -614,7 +617,15 @@ private fun Summary(state: MedicineState, onEvent: (MedicineEvent) -> Unit) {
                     value = state.expDateString,
                     label = R.string.text_exp_date,
                     placeholder = R.string.text_unspecified,
-                    onEvent = { onEvent(MedicineEvent.ToggleDialog(MedicineDialogState.Date)) }
+                    onEvent = { onEvent(MedicineEvent.ToggleDialog(MedicineDialogState.Date)) },
+                    trailingIcon = {
+                        if (state.expDateString.isNotEmpty()) {
+                            IconButton(
+                                onClick = { onEvent(MedicineEvent.ClearExpDate) },
+                                content = { VectorIcon(R.drawable.vector_clear) }
+                            )
+                        }
+                    }
                 )
             }
         )
@@ -628,7 +639,15 @@ private fun Summary(state: MedicineState, onEvent: (MedicineEvent) -> Unit) {
                     value = state.dateOpenedString,
                     label = R.string.text_package_opened_date,
                     placeholder = R.string.text_unspecified,
-                    onEvent = { onEvent(MedicineEvent.ToggleDialog(MedicineDialogState.PackageDate)) }
+                    onEvent = { onEvent(MedicineEvent.ToggleDialog(MedicineDialogState.PackageDate)) },
+                    trailingIcon = {
+                        if (state.dateOpenedString.isNotEmpty()) {
+                            IconButton(
+                                onClick = { onEvent(MedicineEvent.ClearPackageDate) },
+                                content = { VectorIcon(R.drawable.vector_clear) }
+                            )
+                        }
+                    }
                 )
             }
         )

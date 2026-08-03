@@ -2,10 +2,15 @@ package ru.application.homemedkit.ui.navigation
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -31,7 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -58,7 +63,7 @@ import ru.application.homemedkit.ui.screens.SettingsScreen
 
 @Composable
 fun Navigation(model: MainViewModel = viewModel()) {
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val activity = LocalActivity.current as? ComponentActivity
     val barVisibility = rememberNavigationBarVisibility()
 
@@ -72,25 +77,37 @@ fun Navigation(model: MainViewModel = viewModel()) {
 
     val navigator = remember { Navigator(navigationState) }
 
+    val isTopLevel = remember(navigationState.currentRoute) {
+        navigationState.currentRoute in TOP_LEVEL_DESTINATIONS.keys
+    }
+
     val snackbarHost = remember(::SnackbarHostState)
 
     val syncWorkStatus by model.syncWorkState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isTopLevel) {
+        if (isTopLevel) {
+            barVisibility.show()
+        } else {
+            barVisibility.hide()
+        }
+    }
 
     LaunchedEffect(model.snackbarEvent) {
         model.snackbarEvent.collectLatest { workStatus ->
             when (workStatus) {
                 WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING -> snackbarHost.showSnackbar(
-                    message = context.getString(R.string.text_sync),
+                    message = resources.getString(R.string.text_sync),
                     duration = SnackbarDuration.Indefinite
                 )
 
                 WorkInfo.State.SUCCEEDED -> snackbarHost.showSnackbar(
-                    message = context.getString(R.string.text_sync_success),
+                    message = resources.getString(R.string.text_sync_success),
                     duration = SnackbarDuration.Short
                 )
 
                 WorkInfo.State.FAILED, WorkInfo.State.CANCELLED -> snackbarHost.showSnackbar(
-                    message = context.getString(R.string.text_sync_error),
+                    message = resources.getString(R.string.text_sync_error),
                     duration = SnackbarDuration.Short
                 )
 
@@ -112,12 +129,12 @@ fun Navigation(model: MainViewModel = viewModel()) {
             )
         },
         bottomBar = {
-            if (barVisibility.isVisible && navigationState.currentRoute in TOP_LEVEL_DESTINATIONS.keys) {
-                BottomNavigationBar(
-                    selected = navigationState.topLevelRoute,
-                    onSelect = navigator::navigate
-                )
-            }
+            AnimatedVisibility(
+                visible = isTopLevel && barVisibility.isVisible,
+                enter = slideInVertically { it } + expandVertically(),
+                exit = slideOutVertically { it } + shrinkVertically(),
+                content = { BottomNavigationBar(navigationState.topLevelRoute, navigator::navigate) }
+            )
         }
     )
 }
