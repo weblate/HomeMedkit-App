@@ -1,0 +1,2 @@
+— Sie können nun die Felder für das Verfallsdatum und das Anbruchdatum in der Medikamentenkarte löschen.
+— Es wurde eine Einstellung hinzugefügt, mit der die verbleibende Medikamentenmenge in der Liste der aktuellen Einnahmen angezeigt werden kann (standardmäßig deaktiviert).
