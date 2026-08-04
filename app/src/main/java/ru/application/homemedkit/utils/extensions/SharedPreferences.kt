@@ -31,21 +31,19 @@ inline fun <reified T> SharedPreferences.getFlow(key: String, defaultValue: T) =
     safeGetValue(key, defaultValue)
 }
 
-inline fun <T> SharedPreferences.flow(
+fun <T> SharedPreferences.flow(
     key: String,
-    crossinline mapper: SharedPreferences.(key: String) -> T
+    mapper: SharedPreferences.(key: String) -> T
 ) = callbackFlow {
     val listener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, changedKey ->
-        if (key == changedKey) {
-            trySend(preferences.mapper(changedKey))
+        if (changedKey == key || changedKey == null) {
+            trySend(preferences.mapper(key))
         }
     }
 
     registerOnSharedPreferenceChangeListener(listener)
 
-    if (contains(key)) {
-        send(mapper(key))
-    }
+    trySend(mapper(key))
 
     awaitClose { unregisterOnSharedPreferenceChangeListener(listener) }
 }

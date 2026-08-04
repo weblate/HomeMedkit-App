@@ -1,2 +1,0 @@
-— You can now clear the expiration date and opening date fields in the medicine card.
-— Added a setting for displaying the remaining amount of medicine in the list of current intakes (disabled by default).
