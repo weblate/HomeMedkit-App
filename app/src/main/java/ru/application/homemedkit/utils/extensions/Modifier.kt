@@ -6,6 +6,9 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.Density
+import ru.application.homemedkit.utils.SnackbarPaddingState
 
 fun Modifier.drawHorizontalDivider(
     color: Color,
@@ -19,4 +22,8 @@ fun Modifier.drawHorizontalDivider(
         start = start(),
         end = end()
     )
+}
+
+fun Modifier.snackbarPadding(state: SnackbarPaddingState, density: Density) = onGloballyPositioned {
+    state.height = with(density) { it.size.height.toDp() }
 }

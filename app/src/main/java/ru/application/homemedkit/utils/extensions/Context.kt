@@ -8,11 +8,7 @@ import android.content.Intent
 import android.content.res.XmlResourceParser
 import android.media.AudioAttributes
 import android.media.RingtoneManager
-import android.os.Build
-import android.os.Bundle
-import android.os.PowerManager
-import android.os.VibrationEffect
-import android.os.Vibrator
+import android.os.*
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationChannelCompat
@@ -24,8 +20,8 @@ import java.util.Locale
 fun Context.isIgnoringBatteryOptimizations() =
     (getSystemService(POWER_SERVICE) as PowerManager).isIgnoringBatteryOptimizations(packageName)
 
-fun Context.canScheduleExactAlarms() = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) true
-else (getSystemService(ALARM_SERVICE) as AlarmManager).canScheduleExactAlarms()
+fun Context.canScheduleExactAlarms() = Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+        (getSystemService(ALARM_SERVICE) as AlarmManager).canScheduleExactAlarms()
 
 fun Context.canUseFullScreenIntent() = NotificationManagerCompat.from(this).canUseFullScreenIntent()
 

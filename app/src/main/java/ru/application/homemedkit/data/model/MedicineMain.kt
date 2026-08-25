@@ -14,6 +14,9 @@ data class MedicineMain(
     val kitIdsString: String?
 ) {
     val kitIds: Set<Long> by lazy {
-        kitIdsString?.split(",")?.mapNotNullTo(hashSetOf()) { it.toLongOrNull() } ?: emptySet()
+        if (kitIdsString.isNullOrBlank()) emptySet()
+        else kitIdsString.splitToSequence(',')
+            .mapNotNull(String::toLongOrNull)
+            .toHashSet()
     }
 }

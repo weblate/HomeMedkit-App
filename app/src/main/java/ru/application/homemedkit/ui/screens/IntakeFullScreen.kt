@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
-
 package ru.application.homemedkit.ui.screens
 
 import android.content.BroadcastReceiver
@@ -16,31 +14,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,12 +36,7 @@ import ru.application.homemedkit.R
 import ru.application.homemedkit.data.MedicineDatabase
 import ru.application.homemedkit.ui.elements.MedicineImage
 import ru.application.homemedkit.ui.elements.VectorIcon
-import ru.application.homemedkit.utils.ACTION_CLOSE_ALL_FULL_SCREEN_INTENTS
-import ru.application.homemedkit.utils.BLANK
-import ru.application.homemedkit.utils.Formatter
-import ru.application.homemedkit.utils.ID
-import ru.application.homemedkit.utils.IS_ENOUGH_IN_STOCK
-import ru.application.homemedkit.utils.TAKEN_ID
+import ru.application.homemedkit.utils.*
 
 @Composable
 fun IntakeFullScreen(medicineId: Long, takenId: Long, amount: Double, onBack: (() -> Unit)? = null) {

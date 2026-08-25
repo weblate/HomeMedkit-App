@@ -3,10 +3,7 @@ package ru.application.homemedkit.receivers
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.AlarmManager.RTC_WAKEUP
-import android.app.PendingIntent.FLAG_CANCEL_CURRENT
-import android.app.PendingIntent.FLAG_IMMUTABLE
-import android.app.PendingIntent.FLAG_UPDATE_CURRENT
-import android.app.PendingIntent.getBroadcast
+import android.app.PendingIntent.*
 import android.content.Context
 import android.content.Intent
 import ru.application.homemedkit.data.MedicineDatabase

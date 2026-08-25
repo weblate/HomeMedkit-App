@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/vector_scanner"
+        android:shortcutId="shortcut_open_scanner"
+        android:shortcutLongLabel="@string/text_scan"
+        android:shortcutShortLabel="@string/text_scan">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="app://screens/scanner_screen" />
+
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/vector_refresh"
+        android:shortcutId="shortcut_fix_notifications"
+        android:shortcutLongLabel="@string/text_fix_notifications_shortcut"
+        android:shortcutShortLabel="@string/text_fix_notifications_shortcut">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="app://screens/fixed_notifications_screen" />
+
+    </shortcut>
+</shortcuts>

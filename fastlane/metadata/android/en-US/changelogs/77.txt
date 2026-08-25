@@ -1,0 +1,2 @@
+— Added actions when long-pressing the application icon: scanning markings and setting up lost notifications.
+— Fixed an issue where the sync notification on some screens overlapped the actions button.

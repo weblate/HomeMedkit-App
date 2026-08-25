@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package ru.application.homemedkit.models.viewModels
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -22,24 +19,12 @@ import ru.application.homemedkit.utils.di.Database
 import ru.application.homemedkit.utils.di.Preferences
 import ru.application.homemedkit.utils.enums.IntakeExtra
 import ru.application.homemedkit.utils.enums.Interval
-import ru.application.homemedkit.utils.enums.Interval.CUSTOM
-import ru.application.homemedkit.utils.enums.Interval.DAILY
-import ru.application.homemedkit.utils.enums.Interval.WEEKLY
+import ru.application.homemedkit.utils.enums.Interval.*
 import ru.application.homemedkit.utils.enums.Period
-import ru.application.homemedkit.utils.enums.Period.INDEFINITE
-import ru.application.homemedkit.utils.enums.Period.OTHER
-import ru.application.homemedkit.utils.enums.Period.PICK
+import ru.application.homemedkit.utils.enums.Period.*
 import ru.application.homemedkit.utils.enums.SchemaType
-import ru.application.homemedkit.utils.extensions.concat
-import ru.application.homemedkit.utils.extensions.toIntake
-import ru.application.homemedkit.utils.extensions.toMedicineIntake
-import ru.application.homemedkit.utils.extensions.toState
-import ru.application.homemedkit.utils.extensions.toggle
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZonedDateTime
+import ru.application.homemedkit.utils.extensions.*
+import java.time.*
 
 class IntakeViewModel(
    private val intakeId: Long,

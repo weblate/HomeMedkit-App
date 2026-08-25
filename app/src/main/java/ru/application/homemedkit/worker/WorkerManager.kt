@@ -1,12 +1,6 @@
 package ru.application.homemedkit.worker
 
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
+import androidx.work.*
 import ru.application.homemedkit.utils.SYNC_MODE
 import ru.application.homemedkit.utils.WORK_AUTO_SYNC
 import ru.application.homemedkit.utils.di.WorkManager

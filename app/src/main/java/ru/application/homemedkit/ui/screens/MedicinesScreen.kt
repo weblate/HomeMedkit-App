@@ -1,19 +1,10 @@
-@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
-
 package ru.application.homemedkit.ui.screens
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -21,33 +12,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenuGroup
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.DropdownMenuPopup
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FloatingActionButtonMenu
-import androidx.compose.material3.FloatingActionButtonMenuItem
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.ListItemShapes
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.SegmentedListItem
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.ToggleFloatingActionButton
-import androidx.compose.material3.animateFloatingActionButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -60,18 +26,11 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.application.homemedkit.R
-import ru.application.homemedkit.R.string.text_exit_app
-import ru.application.homemedkit.R.string.text_no
-import ru.application.homemedkit.R.string.text_yes
+import ru.application.homemedkit.R.string.*
 import ru.application.homemedkit.data.model.MedicineList
 import ru.application.homemedkit.models.viewModels.MedicinesViewModel
-import ru.application.homemedkit.ui.elements.BoxWithEmptyListText
-import ru.application.homemedkit.ui.elements.DialogKits
-import ru.application.homemedkit.ui.elements.IconButton
-import ru.application.homemedkit.ui.elements.MedicineImage
-import ru.application.homemedkit.ui.elements.ScaffoldSearchBar
-import ru.application.homemedkit.ui.elements.TextDate
-import ru.application.homemedkit.ui.elements.VectorIcon
+import ru.application.homemedkit.ui.elements.*
+import ru.application.homemedkit.ui.navigation.LocalSnackbarPadding
 import ru.application.homemedkit.ui.navigation.Screen
 import ru.application.homemedkit.utils.di.Preferences
 import ru.application.homemedkit.utils.enums.MedicineListView
@@ -87,6 +46,7 @@ fun MedicinesScreen(model: MedicinesViewModel = viewModel(), onNavigate: (Screen
     val grouped by model.grouped.collectAsStateWithLifecycle()
     val kits by model.kits.collectAsStateWithLifecycle()
 
+    val snackbarPadding = LocalSnackbarPadding.current
     val pagerState = rememberPagerState(pageCount = MedicineListView.entries::size)
 
     val listStates = MedicineListView.entries.map { rememberLazyListState() }
@@ -176,8 +136,10 @@ fun MedicinesScreen(model: MedicinesViewModel = viewModel(), onNavigate: (Screen
         },
         floatingActionButton = {
             FloatingActionButtonMenu(
-                modifier = Modifier.align(Alignment.BottomEnd),
                 expanded = state.showAdding,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = snackbarPadding),
                 button = {
                     ToggleFloatingActionButton(
                         checked = state.showAdding,

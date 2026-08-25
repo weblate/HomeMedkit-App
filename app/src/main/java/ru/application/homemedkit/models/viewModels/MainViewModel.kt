@@ -6,20 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import ru.application.homemedkit.ui.navigation.Screen
 import ru.application.homemedkit.ui.navigation.utils.DeepLinkMatcher
 import ru.application.homemedkit.ui.navigation.utils.DeepLinkPattern
 import ru.application.homemedkit.ui.navigation.utils.DeepLinkRequest
 import ru.application.homemedkit.ui.navigation.utils.KeyDecoder
-import ru.application.homemedkit.utils.DEEP_LINK_FULL_SCREEN
-import ru.application.homemedkit.utils.REDIRECT_URI_YANDEX
-import ru.application.homemedkit.utils.WORK_AUTO_SYNC
+import ru.application.homemedkit.utils.*
 import ru.application.homemedkit.utils.di.Preferences
 import ru.application.homemedkit.utils.di.WorkManager
 import ru.application.homemedkit.worker.WorkerManager
@@ -42,7 +35,9 @@ class MainViewModel : ViewModel() {
 
         val deepLinkPatterns = listOf(
             DeepLinkPattern(Screen.Auth.serializer(), REDIRECT_URI_YANDEX.toUri()),
-            DeepLinkPattern(Screen.IntakeFullScreen.serializer(), DEEP_LINK_FULL_SCREEN.toUri())
+            DeepLinkPattern(Screen.IntakeFullScreen.serializer(), DEEP_LINK_FULL_SCREEN.toUri()),
+            DeepLinkPattern(Screen.Scanner.serializer(), DEEP_LINK_SCANNER_SCREEN.toUri()),
+            DeepLinkPattern(Screen.NotificationFix.serializer(), DEEP_LINK_NOTIFICATION_FIX_SCREEN.toUri())
         )
 
         val request = DeepLinkRequest(data)

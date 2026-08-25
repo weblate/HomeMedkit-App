@@ -2,40 +2,14 @@ package ru.application.homemedkit.ui.navigation
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ShortNavigationBar
-import androidx.compose.material3.ShortNavigationBarItem
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarData
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -52,18 +26,14 @@ import ru.application.homemedkit.models.viewModels.IntakeViewModel
 import ru.application.homemedkit.models.viewModels.MainViewModel
 import ru.application.homemedkit.models.viewModels.MedicineViewModel
 import ru.application.homemedkit.ui.elements.VectorIcon
-import ru.application.homemedkit.ui.screens.AuthScreen
-import ru.application.homemedkit.ui.screens.IntakeFullScreen
-import ru.application.homemedkit.ui.screens.IntakeScreen
-import ru.application.homemedkit.ui.screens.IntakesScreen
-import ru.application.homemedkit.ui.screens.MedicineScreen
-import ru.application.homemedkit.ui.screens.MedicinesScreen
-import ru.application.homemedkit.ui.screens.ScannerScreen
-import ru.application.homemedkit.ui.screens.SettingsScreen
+import ru.application.homemedkit.ui.screens.*
+import ru.application.homemedkit.utils.extensions.snackbarPadding
+import ru.application.homemedkit.utils.rememberSnackbarState
 
 @Composable
 fun Navigation(model: MainViewModel = viewModel()) {
     val resources = LocalResources.current
+    val density = LocalDensity.current
     val activity = LocalActivity.current as? ComponentActivity
     val barVisibility = rememberNavigationBarVisibility()
 
@@ -82,6 +52,7 @@ fun Navigation(model: MainViewModel = viewModel()) {
     }
 
     val snackbarHost = remember(::SnackbarHostState)
+    val snackbarPaddingState = rememberSnackbarState(snackbarHost)
 
     val syncWorkStatus by model.syncWorkState.collectAsStateWithLifecycle()
 
@@ -118,13 +89,18 @@ fun Navigation(model: MainViewModel = viewModel()) {
 
     Scaffold(
         content = {
-            CompositionLocalProvider(LocalBarVisibility provides barVisibility) {
-                AppNavDisplay(navigator, navigationState, Modifier.padding(it))
-            }
+            CompositionLocalProvider(
+                content = { AppNavDisplay(navigator, navigationState, Modifier.padding(it)) },
+                values = arrayOf(
+                    LocalBarVisibility provides barVisibility,
+                    LocalSnackbarPadding provides snackbarPaddingState.getAnimatedPadding()
+                )
+            )
         },
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHost,
+                modifier = Modifier.snackbarPadding(snackbarPaddingState, density),
                 snackbar = { SnackbarSync(it, syncWorkStatus) }
             )
         },
@@ -210,6 +186,9 @@ private fun AppNavDisplay(navigator: Navigator, state: NavigationState, modifier
                         model = viewModel { IntakeViewModel(intakeId, medicineId) },
                         onBack = navigator::goBack
                     )
+                }
+                entry<Screen.NotificationFix> {
+                    NotificationFixed()
                 }
                 entry<Screen.IntakeFullScreen> { (takenId, medicineId, amount) ->
                     val onBack = when {

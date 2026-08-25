@@ -1,22 +1,14 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class)
 
 package ru.application.homemedkit.models.viewModels
 
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.application.homemedkit.R
@@ -27,11 +19,7 @@ import ru.application.homemedkit.data.queries.MedicinesQueryBuilder
 import ru.application.homemedkit.models.events.IntakesEvent
 import ru.application.homemedkit.models.events.NewTakenEvent
 import ru.application.homemedkit.models.events.TakenEvent
-import ru.application.homemedkit.models.states.IntakesDialogState
-import ru.application.homemedkit.models.states.IntakesState
-import ru.application.homemedkit.models.states.NewTakenState
-import ru.application.homemedkit.models.states.ScheduledState
-import ru.application.homemedkit.models.states.TakenState
+import ru.application.homemedkit.models.states.*
 import ru.application.homemedkit.utils.BLANK
 import ru.application.homemedkit.utils.Formatter
 import ru.application.homemedkit.utils.ResourceText
@@ -39,11 +27,7 @@ import ru.application.homemedkit.utils.di.AlarmManager
 import ru.application.homemedkit.utils.di.Database
 import ru.application.homemedkit.utils.di.Preferences
 import ru.application.homemedkit.utils.enums.IntakeTab
-import ru.application.homemedkit.utils.extensions.orDefault
-import ru.application.homemedkit.utils.extensions.toIntake
-import ru.application.homemedkit.utils.extensions.toIntakePast
-import ru.application.homemedkit.utils.extensions.toIntakeSchedule
-import ru.application.homemedkit.utils.extensions.toTakenState
+import ru.application.homemedkit.utils.extensions.*
 import java.time.LocalDate
 import kotlin.math.abs
 

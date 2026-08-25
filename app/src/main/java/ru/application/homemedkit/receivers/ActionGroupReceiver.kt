@@ -5,12 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import ru.application.homemedkit.data.MedicineDatabase
-import ru.application.homemedkit.utils.ACTION_CLOSE_ALL_FULL_SCREEN_INTENTS
-import ru.application.homemedkit.utils.BLANK
-import ru.application.homemedkit.utils.ID
-import ru.application.homemedkit.utils.IS_ENOUGH_IN_STOCK
-import ru.application.homemedkit.utils.TAKEN_ID
-import ru.application.homemedkit.utils.TYPE
+import ru.application.homemedkit.utils.*
 import ru.application.homemedkit.utils.extensions.goAsync
 
 class ActionGroupReceiver : BroadcastReceiver() {

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalFoundationStyleApi::class)
+@file:OptIn(ExperimentalFoundationStyleApi::class)
 
 package ru.application.homemedkit.ui.elements
 
@@ -6,7 +6,6 @@ import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
 import androidx.compose.foundation.style.contentPadding
 import androidx.compose.foundation.style.fillWidth
 import androidx.compose.foundation.style.styleable
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

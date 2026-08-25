@@ -1,1 +1,0 @@
-— Fixed an issue where the application's default settings parameters were sometimes not applied.

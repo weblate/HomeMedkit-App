@@ -1,24 +1,11 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-
 package ru.application.homemedkit.ui.screens
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -28,43 +15,9 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.*
 import androidx.compose.material3.OutlinedTextFieldDefaults.MinWidth
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.SegmentedListItem
-import androidx.compose.material3.SelectableDates
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -93,12 +46,8 @@ import ru.application.homemedkit.models.states.NewTakenState
 import ru.application.homemedkit.models.states.ScheduledState
 import ru.application.homemedkit.models.states.TakenState
 import ru.application.homemedkit.models.viewModels.IntakesViewModel
-import ru.application.homemedkit.ui.elements.BoxWithEmptyListText
-import ru.application.homemedkit.ui.elements.IconButton
-import ru.application.homemedkit.ui.elements.MedicineImage
-import ru.application.homemedkit.ui.elements.ScaffoldSearchBar
-import ru.application.homemedkit.ui.elements.TextDate
-import ru.application.homemedkit.ui.elements.VectorIcon
+import ru.application.homemedkit.ui.elements.*
+import ru.application.homemedkit.ui.navigation.LocalSnackbarPadding
 import ru.application.homemedkit.utils.DecimalAmountInputTransformation
 import ru.application.homemedkit.utils.DecimalAmountOutputTransformation
 import ru.application.homemedkit.utils.Formatter
@@ -127,6 +76,7 @@ fun IntakesScreen(onNavigate: (Long) -> Unit) {
         initialPage = Preferences.startPage.extras.getOrElse(0) { 0 } as Int
     )
     val listStates = IntakeTab.entries.map { rememberLazyListState() }
+    val snackbarPadding = LocalSnackbarPadding.current
 
     fun toggleDialog(state: IntakesDialogState) {
         model.onEvent(IntakesEvent.ToggleDialog(state))
@@ -148,7 +98,7 @@ fun IntakesScreen(onNavigate: (Long) -> Unit) {
                 visible = IntakeTab.entries[pagerState.currentPage] == IntakeTab.PAST,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(16.dp)
+                    .padding(16.dp, 16.dp, 16.dp, 16.dp + snackbarPadding)
             ) {
                 FloatingActionButton(
                     onClick = { toggleDialog(IntakesDialogState.TakenAdd) },

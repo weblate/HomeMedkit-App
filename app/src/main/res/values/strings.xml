@@ -260,6 +260,7 @@
     <string name="text_every_week">Every week</string>
     <string name="text_exit">Exit</string>
     <string name="text_finish_date">Finish date</string>
+    <string name="text_fix_notifications_shortcut">Fix notifications</string>
     <string name="text_force_download">Force download</string>
     <string name="text_force_upload">Force upload</string>
     <string name="text_go_to">Go</string>

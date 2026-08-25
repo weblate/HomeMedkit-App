@@ -1,11 +1,7 @@
 package ru.application.homemedkit.ui.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
 
 @Stable
 interface NavigationBarVisibility {
@@ -31,6 +27,8 @@ private class InitialNavigationBarVisibility : NavigationBarVisibility {
 val LocalBarVisibility = compositionLocalOf<NavigationBarVisibility> {
     InitialNavigationBarVisibility()
 }
+
+val LocalSnackbarPadding = compositionLocalOf { 0.dp }
 
 @Composable
 fun rememberNavigationBarVisibility(): NavigationBarVisibility {

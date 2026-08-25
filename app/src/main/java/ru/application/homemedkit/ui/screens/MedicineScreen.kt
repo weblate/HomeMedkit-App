@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class,
-    ExperimentalUuidApi::class, ExperimentalFoundationStyleApi::class
-)
+@file:OptIn(ExperimentalFoundationStyleApi::class)
 
 package ru.application.homemedkit.ui.screens
 
@@ -22,21 +20,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -49,54 +33,16 @@ import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.style.ExperimentalFoundationStyleApi
-import androidx.compose.foundation.style.Style
-import androidx.compose.foundation.style.contentPadding
-import androidx.compose.foundation.style.externalPadding
-import androidx.compose.foundation.style.fillHeight
-import androidx.compose.foundation.style.fillSize
-import androidx.compose.foundation.style.size
-import androidx.compose.foundation.style.styleable
+import androidx.compose.foundation.style.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.LocalMaterialTheme
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedListItem
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -125,26 +71,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.application.homemedkit.R
 import ru.application.homemedkit.data.dto.Kit
-import ru.application.homemedkit.dialogs.DatePicker
-import ru.application.homemedkit.dialogs.DraggableItem
-import ru.application.homemedkit.dialogs.MonthYear
-import ru.application.homemedkit.dialogs.dragContainer
-import ru.application.homemedkit.dialogs.rememberDragDropState
+import ru.application.homemedkit.dialogs.*
 import ru.application.homemedkit.models.events.MedicineAction
 import ru.application.homemedkit.models.events.MedicineEvent
 import ru.application.homemedkit.models.events.MedicineEvent.SetProductName
 import ru.application.homemedkit.models.states.MedicineDialogState
 import ru.application.homemedkit.models.states.MedicineState
 import ru.application.homemedkit.models.viewModels.MedicineViewModel
-import ru.application.homemedkit.ui.elements.BoxLoading
-import ru.application.homemedkit.ui.elements.CustomSnackbar
-import ru.application.homemedkit.ui.elements.DialogDelete
-import ru.application.homemedkit.ui.elements.DialogKits
-import ru.application.homemedkit.ui.elements.IconButton
-import ru.application.homemedkit.ui.elements.MedicineImage
-import ru.application.homemedkit.ui.elements.NavigationIcon
-import ru.application.homemedkit.ui.elements.TopBarActions
-import ru.application.homemedkit.ui.elements.VectorIcon
+import ru.application.homemedkit.ui.elements.*
 import ru.application.homemedkit.utils.DecimalAmountInputTransformation
 import ru.application.homemedkit.utils.DecimalAmountOutputTransformation
 import ru.application.homemedkit.utils.Formatter
@@ -156,7 +90,6 @@ import ru.application.homemedkit.utils.enums.DrugType
 import ru.application.homemedkit.utils.enums.ImageEditing
 import ru.application.homemedkit.utils.extensions.medicine
 import ru.application.homemedkit.utils.permissions.rememberPermissionState
-import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun MedicineScreen(model: MedicineViewModel, onBack: () -> Unit, onGoToIntake: (Long) -> Unit) {

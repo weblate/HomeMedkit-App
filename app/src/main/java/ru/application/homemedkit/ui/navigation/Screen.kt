@@ -20,12 +20,19 @@ sealed interface Screen : NavKey {
     data object Settings : Screen
 
     @Serializable
+    data object NotificationFix : NavDeepLink, Screen {
+        override val parent = Settings
+    }
+
+    @Serializable
     data class Auth(val code: String? = null) : NavDeepLink, Screen {
         override val parent = Settings
     }
 
     @Serializable
-    data object Scanner : Screen
+    data object Scanner : NavDeepLink, Screen {
+        override val parent = Medicines
+    }
 
     @Serializable
     data class Medicine(

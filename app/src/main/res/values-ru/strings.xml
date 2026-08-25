@@ -259,6 +259,7 @@
     <string name="text_every_week">Каждую неделю</string>
     <string name="text_exit">Выйти</string>
     <string name="text_finish_date">Конечная дата</string>
+    <string name="text_fix_notifications_shortcut">Перенастроить уведомления</string>
     <string name="text_force_download">Принудительное скачивание</string>
     <string name="text_force_upload">Принудительная выгрузка</string>
     <string name="text_go_to">Перейти</string>

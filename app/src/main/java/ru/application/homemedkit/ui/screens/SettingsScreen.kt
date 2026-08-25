@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
-
 package ru.application.homemedkit.ui.screens
 
 import android.Manifest
@@ -12,52 +10,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedListItem
-import androidx.compose.material3.SmallExtendedFloatingActionButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -75,14 +42,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
-import me.zhanghai.compose.preference.ListPreference
-import me.zhanghai.compose.preference.Preference
-import me.zhanghai.compose.preference.ProvidePreferenceLocals
-import me.zhanghai.compose.preference.SwitchPreference
-import me.zhanghai.compose.preference.preference
-import me.zhanghai.compose.preference.preferenceCategory
-import me.zhanghai.compose.preference.switchPreference
-import me.zhanghai.compose.preference.twoTargetSwitchPreference
+import me.zhanghai.compose.preference.*
 import ru.application.homemedkit.R
 import ru.application.homemedkit.data.dto.Kit
 import ru.application.homemedkit.dialogs.DraggableItem
@@ -95,43 +55,13 @@ import ru.application.homemedkit.ui.elements.NavigationIcon
 import ru.application.homemedkit.ui.elements.VectorIcon
 import ru.application.homemedkit.ui.navigation.LocalBarVisibility
 import ru.application.homemedkit.ui.theme.isDynamicColorAvailable
-import ru.application.homemedkit.utils.ActionHandler
-import ru.application.homemedkit.utils.ActionResult
-import ru.application.homemedkit.utils.AppLocale
-import ru.application.homemedkit.utils.DataManager
-import ru.application.homemedkit.utils.KEY_APP_SYSTEM
-import ru.application.homemedkit.utils.KEY_APP_VIEW
-import ru.application.homemedkit.utils.KEY_AUTOLAUNCH
-import ru.application.homemedkit.utils.KEY_AUTO_CHANGE_INTAKE_WHEN_TIME_CHANGE
-import ru.application.homemedkit.utils.KEY_AUTO_SYNC_ENABLED
-import ru.application.homemedkit.utils.KEY_BASIC_SETTINGS
-import ru.application.homemedkit.utils.KEY_CLEAR_CACHE
-import ru.application.homemedkit.utils.KEY_CONFIRM_EXIT
-import ru.application.homemedkit.utils.KEY_DOWNLOAD
-import ru.application.homemedkit.utils.KEY_DYNAMIC_COLOR
-import ru.application.homemedkit.utils.KEY_FIXING
-import ru.application.homemedkit.utils.KEY_IMPORT_EXPORT
-import ru.application.homemedkit.utils.KEY_KITS
-import ru.application.homemedkit.utils.KEY_PERMISSIONS
-import ru.application.homemedkit.utils.KEY_SHOW_STOCK_IN_SCHEDULED
-import ru.application.homemedkit.utils.KEY_USE_ALARM_CLOCK
-import ru.application.homemedkit.utils.KEY_USE_VIBRATION_SCAN
+import ru.application.homemedkit.utils.*
 import ru.application.homemedkit.utils.di.AlarmManager
 import ru.application.homemedkit.utils.di.Preferences
 import ru.application.homemedkit.utils.enums.Page
 import ru.application.homemedkit.utils.enums.Sorting
 import ru.application.homemedkit.utils.enums.Theme
-import ru.application.homemedkit.utils.extensions.canScheduleExactAlarms
-import ru.application.homemedkit.utils.extensions.drawHorizontalDivider
-import ru.application.homemedkit.utils.extensions.getLanguageList
-import ru.application.homemedkit.utils.extensions.getLocalizedName
-import ru.application.homemedkit.utils.extensions.openAutoStartSettings
-import ru.application.homemedkit.utils.extensions.restartApplication
-import ru.application.homemedkit.utils.extensions.showToast
-import ru.application.homemedkit.utils.launcherExportDatabase
-import ru.application.homemedkit.utils.launcherExportImages
-import ru.application.homemedkit.utils.launcherImportDatabase
-import ru.application.homemedkit.utils.launcherImportImages
+import ru.application.homemedkit.utils.extensions.*
 import ru.application.homemedkit.utils.permissions.PermissionState
 import ru.application.homemedkit.utils.permissions.rememberPermissionState
 import java.util.Locale
@@ -588,7 +518,7 @@ fun PermissionsScreen(onBack: () -> Unit, onFirstExit: () -> Unit = onBack) {
         @StringRes title: Int,
         @StringRes description: Int
     ) = ListItem(
-        headlineContent = { Text(stringResource(title)) },
+        content = { Text(stringResource(title)) },
         trailingContent = { ButtonGrant(permissionState) },
         supportingContent = {
             Text(
@@ -716,8 +646,8 @@ private fun DialogData(onAction: ActionHandler, onDismiss: () -> Unit) {
 
 @Composable
 private fun DialogFixingNotifications(onBack: () -> Unit) {
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     fun onFix() {
         scope.launch {

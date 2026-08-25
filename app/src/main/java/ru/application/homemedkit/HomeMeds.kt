@@ -11,9 +11,7 @@ import coil3.request.CachePolicy
 import coil3.request.allowRgb565
 import coil3.request.crossfade
 import me.zhanghai.compose.preference.isDefaultPreferenceFlowAndroidLongSupportEnabled
-import ru.application.homemedkit.R.string.channel_exp_desc
-import ru.application.homemedkit.R.string.channel_intakes_desc
-import ru.application.homemedkit.R.string.channel_pre_desc
+import ru.application.homemedkit.R.string.*
 import ru.application.homemedkit.utils.CHANNEL_ID_EXP
 import ru.application.homemedkit.utils.CHANNEL_ID_INTAKES
 import ru.application.homemedkit.utils.CHANNEL_ID_PRE

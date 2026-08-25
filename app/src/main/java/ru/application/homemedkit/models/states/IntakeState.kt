@@ -1,9 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package ru.application.homemedkit.models.states
 
 import androidx.annotation.StringRes
-import androidx.compose.material3.ExperimentalMaterial3Api
 import ru.application.homemedkit.R
 import ru.application.homemedkit.data.model.IntakeAmountTime
 import ru.application.homemedkit.data.model.MedicineIntake

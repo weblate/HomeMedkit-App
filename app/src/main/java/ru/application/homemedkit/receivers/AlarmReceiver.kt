@@ -11,15 +11,7 @@ import androidx.core.net.toUri
 import ru.application.homemedkit.MainActivity
 import ru.application.homemedkit.R
 import ru.application.homemedkit.data.MedicineDatabase
-import ru.application.homemedkit.utils.ALARM_ID
-import ru.application.homemedkit.utils.BLANK
-import ru.application.homemedkit.utils.CHANNEL_ID_INTAKES
-import ru.application.homemedkit.utils.DEEP_LINK_BASE_URL
-import ru.application.homemedkit.utils.Formatter
-import ru.application.homemedkit.utils.ID
-import ru.application.homemedkit.utils.IS_ENOUGH_IN_STOCK
-import ru.application.homemedkit.utils.TAKEN_ID
-import ru.application.homemedkit.utils.TYPE
+import ru.application.homemedkit.utils.*
 import ru.application.homemedkit.utils.extensions.goAsync
 import ru.application.homemedkit.utils.extensions.safeNotify
 
@@ -73,7 +65,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
                             if (intake.cancellable) setTimeoutAfter(600000L)
                             if (intake.fullScreen) {
-                                val uri = DEEP_LINK_BASE_URL.toUri()
+                                val uri = DEEP_LINK_FULL_SCREEN_BASE_URL.toUri()
                                     .buildUpon()
                                     .appendQueryParameter("takenId", takenId.toString())
                                     .appendQueryParameter("medicineId", intake.medicineId.toString())

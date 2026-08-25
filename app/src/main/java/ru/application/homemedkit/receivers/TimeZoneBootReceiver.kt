@@ -15,7 +15,7 @@ import java.time.ZonedDateTime
 
 class TimeZoneBootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) = goAsync {
-        if (intent.action == Intent.ACTION_BOOT_COMPLETED || intent.action == Intent.ACTION_TIMEZONE_CHANGED || intent.action == Intent.ACTION_TIME_CHANGED) {
+        if (intent.action == Intent.ACTION_TIMEZONE_CHANGED || intent.action == Intent.ACTION_TIME_CHANGED) {
             val alarmSetter = AlarmSetter.getInstance(context)
             val database = MedicineDatabase.getInstance(context)
             val preferences = Preferences.getInstance(context)

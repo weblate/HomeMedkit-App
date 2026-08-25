@@ -8,22 +8,8 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.Dispatchers
-import ru.application.homemedkit.data.dao.AlarmDAO
-import ru.application.homemedkit.data.dao.IntakeDAO
-import ru.application.homemedkit.data.dao.IntakeDayDAO
-import ru.application.homemedkit.data.dao.KitDAO
-import ru.application.homemedkit.data.dao.MedicineDAO
-import ru.application.homemedkit.data.dao.TakenDAO
-import ru.application.homemedkit.data.dto.Alarm
-import ru.application.homemedkit.data.dto.Image
-import ru.application.homemedkit.data.dto.Intake
-import ru.application.homemedkit.data.dto.IntakeDay
-import ru.application.homemedkit.data.dto.IntakeTaken
-import ru.application.homemedkit.data.dto.IntakeTime
-import ru.application.homemedkit.data.dto.Kit
-import ru.application.homemedkit.data.dto.Medicine
-import ru.application.homemedkit.data.dto.MedicineFTS
-import ru.application.homemedkit.data.dto.MedicineKit
+import ru.application.homemedkit.data.dao.*
+import ru.application.homemedkit.data.dto.*
 import ru.application.homemedkit.utils.DATABASE_NAME
 
 @Database(

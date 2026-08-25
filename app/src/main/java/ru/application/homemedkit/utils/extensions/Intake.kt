@@ -1,33 +1,17 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package ru.application.homemedkit.utils.extensions
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 import androidx.compose.ui.text.intl.Locale
 import ru.application.homemedkit.R
 import ru.application.homemedkit.R.string.intake_text_not_taken
 import ru.application.homemedkit.data.dto.IntakeTaken
-import ru.application.homemedkit.data.model.Intake
-import ru.application.homemedkit.data.model.IntakeAmountTime
-import ru.application.homemedkit.data.model.IntakeFull
-import ru.application.homemedkit.data.model.IntakeList
-import ru.application.homemedkit.data.model.IntakePast
-import ru.application.homemedkit.data.model.IntakeSchedule
-import ru.application.homemedkit.data.model.IntakeTakenFull
-import ru.application.homemedkit.data.model.Schedule
-import ru.application.homemedkit.data.model.ScheduleModel
-import ru.application.homemedkit.data.model.TakenModel
+import ru.application.homemedkit.data.model.*
 import ru.application.homemedkit.models.states.IntakeState
 import ru.application.homemedkit.models.states.TakenState
 import ru.application.homemedkit.utils.Formatter
 import ru.application.homemedkit.utils.ResourceText
 import ru.application.homemedkit.utils.buildResourceText
-import ru.application.homemedkit.utils.enums.DoseType
-import ru.application.homemedkit.utils.enums.IntakeExtra
-import ru.application.homemedkit.utils.enums.Interval
-import ru.application.homemedkit.utils.enums.Period
-import ru.application.homemedkit.utils.enums.SchemaType
+import ru.application.homemedkit.utils.enums.*
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime

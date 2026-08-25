@@ -2,16 +2,11 @@ package ru.application.homemedkit.models.viewModels
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.application.homemedkit.data.dto.Image
 import ru.application.homemedkit.data.dto.MedicineKit
 import ru.application.homemedkit.models.events.MedicineAction
@@ -26,11 +21,7 @@ import ru.application.homemedkit.utils.Formatter
 import ru.application.homemedkit.utils.di.Database
 import ru.application.homemedkit.utils.enums.DrugType
 import ru.application.homemedkit.utils.enums.ImageEditing
-import ru.application.homemedkit.utils.extensions.asMedicine
-import ru.application.homemedkit.utils.extensions.concat
-import ru.application.homemedkit.utils.extensions.toMedicine
-import ru.application.homemedkit.utils.extensions.toState
-import ru.application.homemedkit.utils.extensions.toggle
+import ru.application.homemedkit.utils.extensions.*
 import ru.application.homemedkit.utils.getMedicineImages
 import java.io.File
 
