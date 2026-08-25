@@ -1,20 +1,19 @@
-Medkit
+Hausapotheke Medkit
 
-Die Anwendung lässt Sie einfach und schnell Informationen über eingenommene Medikamente registrieren und speichern.
+Einfaches Hinzufügen und Speichern von Medikamentendaten.
 
-<b>Eigenschaften</b>
+<b>Funktionen</b>
 
-* Automatisches Hinzufügen von Medikamenten durch Scannen des Etiketts (nur für russische Medikamente).
-* Darüber hinaus besteht auch die Möglichkeit, Medikamente manuell hinzuzufügen.
+* Automatisch per Scan hinzufügen.
 * Cloud-Synchronisierung der Medikamentenliste.
-* Aktualisieren der Informationen über das Medikament, falls es ohne Internetverbindung gescannt wurde.
-* Bearbeiten von Informationen zu manuell hinzugefügten Medikamenten.
-* Hinzufügen von Medikamentenbildern.
-* Sortieren von Medikamenten nach Verfallsdatum.
-* Gruppierung von Medikamenten nach Kategorien.
-* Benachrichtigungen für die Einnahme von Medikamenten.
-* Anzeige des Einnahmeplans für Medikamente.
-* Benachrichtigung zum Verfallsdatum von Medikamenten.
-* Exportieren und Importieren der Daten auf andere Geräte.
+* Manuelles Hinzufügen von Medikamenten.
+* Offline-Aktualisierung von Infos nach einem Scan.
+* Medikamentenbilder hinzufügen.
+* Sortierung nach Ablaufdatum.
+* Gruppierung nach Kategorien.
+* Ton-Benachrichtigung für die Einnahme.
+* Anzeige der nächsten Einnahmen.
+* Erinnerung an ablaufende Medikamente.
+* Datenbank-Export und -Import auf andere Geräte.
 
-Mit Medkit können Sie das Verfallsdatum von Medikamenten verfolgen, einen Zeitplan für deren Einnahme erstellen und Benachrichtigungen darüber erhalten. Medkit ist ein zuverlässiger und bequemer Assistent, der Ihnen helfen wird, Ihre Gesundheit zu überwachen.
+Die App überwacht Ablaufdaten, plant Einnahmen und erinnert dich zuverlässig. Dein unverzichtbarer Helfer für die Gesundheit.

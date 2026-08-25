@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Menu -->
-    <string name="bottom_bar_medicines">Medikamente</string>
+    <string name="bottom_bar_medicines">Medikament</string>
     <string name="bottom_bar_intakes">Einnahmen</string>
     <string name="bottom_bar_settings">Einstellung</string>
     <!-- Preferences -->
@@ -16,7 +16,7 @@
     <string name="preference_download_images">Bilder der Medikamente herunterladen</string>
     <string name="preference_check_expiration_date">Verfallsdatum der Medikamente prüfen</string>
     <string name="preference_use_alarm_clock">Alarm statt Benachrichtigung verwenden</string>
-    <string name="preference_system">System</string>
+    <string name="preference_system">Systemstandard</string>
     <string name="preference_permissions">Berechtigungen</string>
     <string name="preference_language">App-Sprache</string>
     <string name="preference_app_theme">App-Thema</string>
@@ -37,15 +37,15 @@
     <string name="sorting_from_oldest">Ablaufdatum (alt zu neu)</string>
     <string name="sorting_from_newest">Ablaufdatum (neu zu alt)</string>
     <!-- Themes -->
-    <string name="theme_system">System</string>
+    <string name="theme_system">Systemdesign</string>
     <string name="theme_light">Hell</string>
     <string name="theme_dark">Dunkel</string>
     <!-- Notifications -->
     <string name="channel_name">Benachrichtigung mit Ton</string>
-    <string name="channel_exp_desc">Ablaufdatum</string>
+    <string name="channel_exp_desc">Haltbarkeitsdatum</string>
     <string name="channel_intakes_desc">Medikamenten-Einnahme</string>
     <string name="channel_pre_desc">Anstehende Einnahme</string>
-    <string name="text_action_intake_all_decline">Alles löschen</string>
+    <string name="text_action_intake_all_decline">Lösche alles</string>
     <string name="text_attention">Achtung!</string>
     <string name="text_do_intake">Einnehmen</string>
     <string name="text_expire_soon">Das Ablaufdatum von %1$s ist nahe</string>
@@ -89,27 +89,27 @@
     <string name="type_extract">EXTRAKT</string>
     <string name="type_mixture">MIXTUR</string>
     <string name="type_syrup">SIRUP</string>
-    <string name="type_emulsion">EMULSION</string>
-    <string name="type_suspension">SUSPENSION</string>
+    <string name="type_emulsion">Emulsion</string>
+    <string name="type_suspension">Suspension</string>
     <string name="type_mix">MISCHUNG</string>
     <string name="type_ointment">SALBE</string>
-    <string name="type_gel">GEL</string>
+    <string name="type_gel">Gel</string>
     <string name="type_paste">PASTE</string>
     <string name="type_suppository">ZÄPFCHEN</string>
-    <string name="type_aerosol">AEROSOL</string>
-    <string name="type_spray">SPRAY</string>
+    <string name="type_aerosol">Aerosol</string>
+    <string name="type_spray">Spray</string>
     <string name="type_drops">TROPFEN</string>
     <string name="type_patch">PFLASTER</string>
-    <string name="type_bandage">BANDAGE</string>
+    <string name="type_bandage">Verband</string>
     <string name="type_napkins">TÜCHER</string>
     <!-- Medication dose types -->
     <string name="dose_ed">Einh.</string>
     <string name="dose_pcs">St.</string>
     <string name="dose_sach">Btl.</string>
-    <string name="dose_g">g</string>
-    <string name="dose_mg">mg</string>
+    <string name="dose_g">Gramm</string>
+    <string name="dose_mg">Milligramm</string>
     <string name="dose_l">L</string>
-    <string name="dose_ml">ml</string>
+    <string name="dose_ml">Milliliter</string>
     <!-- Tabs -->
     <string name="tab_groups">Gruppen</string>
     <string name="tab_list">Liste</string>
@@ -154,11 +154,11 @@
     <!-- Dialogs -->
     <string name="manual_add">Soll das Medikament per Hand eingetragen werden?</string>
     <string name="text_choose_from_gallery">Aus der Galerie auswählen</string>
-    <string name="text_clear_app_cache_description">Hierdurch werden der Anwendungs-Cache und nicht länger genutzte Fotos von Medikamenten gelöscht.</string>
+    <string name="text_clear_app_cache_description">Hierdurch werden der Anwendungs Cache und nicht länger genutzte Fotos von Medikamenten gelöscht</string>
     <string name="text_code_not_found">Code nicht gefunden!</string>
     <string name="text_confirm_deletion_int">Soll diese Einnahme wirklich gelöscht werden?</string>
     <string name="text_confirm_deletion_med">Soll dieses Medikament wirklich gelöscht werden?</string>
-    <string name="text_confirm_schedule_to_taken">Bestätigst du, dass du bereits %1$s am %2$s um %3$s genommen hast?</string>
+    <string name="text_confirm_schedule_to_taken">Bestätigst du, dass du %1$s am %2$s um %3$s bereits eingenommen hast?</string>
     <string name="text_connection_error">Verbindungsfehler!</string>
     <string name="text_data_in_cloud">Daten in der Cloud gefunden</string>
     <string name="text_data_in_cloud_desc">In der Cloud wurden Daten gefunden. Was möchten Sie tun?</string>
@@ -177,11 +177,11 @@
     <string name="text_import_database">Daten importieren</string>
     <string name="text_import_images">Bilder importieren</string>
     <string name="text_kit_list_is_empty">Keine Gruppen gefunden. Gruppen können in den Einstellungen der App hinzugefügt werden.</string>
-    <string name="text_kit_title">Name der Gruppe</string>
+    <string name="text_kit_title">Gruppentitel</string>
     <string name="text_medicine_deleted">Medikament wurde gelöscht, Einnahmestatus ist nicht änderbar</string>
     <string name="text_not_saved_intake">Die Einnahme wurde nicht gespeichert! Möchten Sie zurückgehen?</string>
     <string name="text_not_saved_medicine">Das Medikament wurde nicht gespeichert! Möchten Sie die den Dialog dennoch schließen?</string>
-    <string name="text_pay_attention">Achtung!</string>
+    <string name="text_pay_attention">Bitte beachten!</string>
     <string name="text_pick_icon">Aus den Icons wählen</string>
     <string name="text_request_camera">Um Labels zu scannen, benötigt die App Kamerazugriffs-Rechte</string>
     <string name="text_select_time">Zeit auswählen</string>
@@ -193,7 +193,7 @@
     <string name="text_permission_title_ignore_battery">Akkuoptimierung ignorieren</string>
     <string name="text_permission_title_notifications">Benachrichtigungen</string>
     <string name="text_permission_title_reminders">Einstellen von Benachrichtigungen</string>
-    <string name="text_explain_camera">Um ein Etikett zu scannen, müssen Sie die Berechtigung zur Verwendung der Kamera erteilen. Die Codes EAN-13 und DataMatrix werden akzeptiert. Nachstehend finden Sie ein Beispiel dafür, wie diese aussehen könnten (dies funktioniert nur für russische Medikamente).</string>
+    <string name="text_explain_camera">Um ein Etikett zu scannen, müssen Sie die Berechtigung zur Verwendung der Kamera erteilen. Die Codes EAN-13 und DataMatrix werden akzeptiert. Nachstehend finden Sie ein Beispiel dafür, wie diese aussehen könnten (dies funktioniert nur für russische Medikamente)</string>
     <string name="text_explain_datamatrix">Vollständige Informationen zum Arzneimittel</string>
     <string name="text_explain_disabled">Die erforderliche Berechtigung wurde nicht gewährt</string>
     <string name="text_explain_ean_13">Nur der Name des Medikaments</string>
@@ -225,9 +225,9 @@
     <string name="text_every_week">Jede Woche</string>
     <string name="text_exit">Verlassen</string>
     <string name="text_finish_date">Enddatum</string>
-    <string name="text_force_download">Download erzwingen</string>
+    <string name="text_force_download">Runterladen erzwingen</string>
     <string name="text_force_upload">Hochladen erzwingen</string>
-    <string name="text_go_to">OK</string>
+    <string name="text_go_to">Los</string>
     <string name="text_grant">Erlauben</string>
     <string name="text_list_view">Listenansicht</string>
     <string name="text_no">Nein</string>
@@ -249,7 +249,7 @@
     <string name="text_selected">Ausgewählt</string>
     <string name="text_selected_of">%1$s von %2$s ausgewählt</string>
     <string name="text_start_date">Startdatum</string>
-    <string name="text_status">Status</string>
+    <string name="text_status">Der Status</string>
     <string name="text_stay">Bleiben</string>
     <string name="text_success">Geschafft!</string>
     <string name="text_sync">Synchronisierung</string>
@@ -272,8 +272,8 @@
     <string name="text_in_progress">(in Bearbeitung)</string>
     <!-- Plurals -->
     <plurals name="intake_times_a_day">
-        <item quantity="one">%d-mal am Tag</item>
-        <item quantity="other">%d-mal am Tag</item>
+        <item quantity="one">%d-Mal am Tag</item>
+        <item quantity="other">%d-Male am Tag</item>
     </plurals>
     <plurals name="intake_interval_in_day">
         <item quantity="one">%d tag</item>
@@ -283,4 +283,13 @@
     <string name="preference_system_app_autolaunch">Systemweiter Selbststart der App</string>
     <string name="theme_dark_amoled">Dunkel AMOLED</string>
     <string name="intake_text_in_stock">vorrätig</string>
+    <string name="app_name">Medizinset</string>
+    <string name="page_intake_current">Einnahme (aktuell)</string>
+    <string name="text_action_intake_all_accept">Alle Einnahmen</string>
+    <string name="text_do_intake_all">Alle einnehmen</string>
+    <string name="text_toast_autostart_not_found">Autostart-Einstellungen für dieses Gerät nicht gefunden</string>
+    <string name="text_hide_empty">Nicht vorrätige ausblenden</string>
+    <string name="text_medicine_not_in_stock">­Du kannst %1$s nicht einnehmen, da nicht mehr genug übrig ist!</string>
+    <string name="text_intake_sure_to_intake_all">Bist du sicher, dass du aktuell alle Medikamente einnimmst?</string>
+    <string name="text_yandex">Yandex</string>
 </resources>
