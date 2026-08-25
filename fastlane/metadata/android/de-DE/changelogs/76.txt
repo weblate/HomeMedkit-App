@@ -1,1 +1,0 @@
-— Es wurde ein Problem behoben, bei dem die Grundeinstellungen der Anwendung manchmal nicht übernommen wurden.
