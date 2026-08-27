@@ -444,7 +444,7 @@ private fun DialogAddTaken(
                         onDismissRequest = { expanded = false }
                     ) {
                         medicines.fastForEachIndexed { index, item ->
-                            DropdownMenuItem(
+                            SelectableDropdownMenuItem(
                                 shapes = MenuDefaults.itemShape(index, medicines.size),
                                 selected = item == newTaken.medicine,
                                 onClick = {

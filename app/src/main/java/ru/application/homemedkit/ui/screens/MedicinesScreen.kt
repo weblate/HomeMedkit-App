@@ -95,7 +95,7 @@ fun MedicinesScreen(model: MedicinesViewModel = viewModel(), onNavigate: (Screen
                     HorizontalDivider(Modifier.padding(MenuDefaults.HorizontalDividerPadding))
 
                     Sorting.entries.fastForEachIndexed { index, entry ->
-                        DropdownMenuItem(
+                        SelectableDropdownMenuItem(
                             selected = entry == state.sorting,
                             onClick = { model.setSorting(entry) },
                             text = { Text(stringResource(entry.title)) },
@@ -117,7 +117,7 @@ fun MedicinesScreen(model: MedicinesViewModel = viewModel(), onNavigate: (Screen
                     HorizontalDivider(Modifier.padding(MenuDefaults.HorizontalDividerPadding))
 
                     MedicineListView.entries.fastForEachIndexed { index, entry ->
-                        DropdownMenuItem(
+                        SelectableDropdownMenuItem(
                             selected = state.listView == entry,
                             onClick = { model.pickView(entry)  },
                             text = { Text(stringResource(entry.title)) },
